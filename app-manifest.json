@@ -1,0 +1,22 @@
+{
+  "edition": "public",
+  "branch": "codex/public/terminal",
+  "slug": "terminal",
+  "label": "Terminal",
+  "component": "TerminalApp.tsx",
+  "generatedAt": "2026-07-18T14:24:58.463Z",
+  "sourceFiles": [
+    "src/components/TerminalApp.tsx",
+    "src/index.css",
+    "src/types.ts",
+    "src/utils/archiveTracking.ts",
+    "src/utils/automationGuard.ts",
+    "src/utils/fileValidation.ts",
+    "src/utils/moltbookAgent.ts",
+    "src/utils/pocketAI.ts",
+    "src/utils/spinoLLMEngine.ts",
+    "src/utils/spinoQualityProfile.ts",
+    "src/utils/spinoTools.ts",
+    "src/utils/storage.ts"
+  ]
+}
