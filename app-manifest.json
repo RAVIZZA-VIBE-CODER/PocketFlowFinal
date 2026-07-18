@@ -1,0 +1,18 @@
+{
+  "edition": "public",
+  "branch": "codex/public/builder",
+  "slug": "builder",
+  "label": "Builder",
+  "component": "BuilderApp.tsx",
+  "generatedAt": "2026-07-18T14:24:53.981Z",
+  "sourceFiles": [
+    "src/components/BuilderApp.tsx",
+    "src/index.css",
+    "src/types.ts",
+    "src/utils/archiveTracking.ts",
+    "src/utils/fileValidation.ts",
+    "src/utils/lifeMemory.ts",
+    "src/utils/spinoSpeech.ts",
+    "src/utils/storage.ts"
+  ]
+}
