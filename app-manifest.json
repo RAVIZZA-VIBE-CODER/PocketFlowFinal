@@ -1,0 +1,15 @@
+{
+  "edition": "public",
+  "branch": "codex/public/memopad-calenotes",
+  "slug": "memopad-calenotes",
+  "label": "MemoPad / Calenotes",
+  "component": "CalenotesApp.tsx",
+  "generatedAt": "2026-07-18T14:24:55.277Z",
+  "sourceFiles": [
+    "src/components/CalenotesApp.tsx",
+    "src/index.css",
+    "src/types.ts",
+    "src/utils/lifeMemory.ts",
+    "src/utils/pocketNotifications.ts"
+  ]
+}
