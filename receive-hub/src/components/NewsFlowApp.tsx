@@ -7512,7 +7512,7 @@ export default function NewsFlowApp({ onNotify }: NewsFlowAppProps) {
                   <input
                     value={quickContactEmail}
                     onChange={(event) => setQuickContactEmail(event.target.value)}
-                    placeholder="email@domain.com"
+                    placeholder="contact handle"
                     className="h-11 min-w-0 rounded-lg border border-[#c8bda5] bg-[#fffaf0] px-3 text-xs font-bold outline-none"
                   />
                   <button
@@ -7838,7 +7838,7 @@ export default function NewsFlowApp({ onNotify }: NewsFlowAppProps) {
                               <input
                                 value={listContactEmail}
                                 onChange={(event) => setListContactEmail(event.target.value)}
-                                placeholder="email@domain.com"
+                                placeholder="contact handle"
                                 className="h-11 rounded-lg border border-[#c8bda5] bg-[#f6f0df] px-3 text-xs font-bold outline-none"
                               />
                               <button
