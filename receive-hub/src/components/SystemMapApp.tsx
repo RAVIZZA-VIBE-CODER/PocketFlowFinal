@@ -214,6 +214,7 @@ const CONTROL_LOG_KEY = "pocketflow.systemMap.controlLog.v1";
 const AGENT_CONTROL_KEY = "pocketflow.systemMap.agentControls.v1";
 const RUN_AUTOMATIONS_EVENT = "pocketflow:run-scheduled-automations";
 const DEV_SIMULATION_ENABLED = Boolean((import.meta as unknown as { env?: { DEV?: boolean } }).env?.DEV);
+const USE_PUBLIC_METRO_MAP = true;
 
 const layerMeta: Record<MapLayer, { label: string; hubLabel: string; color: string; description: string; hubX: number; hubY: number; angle: number; step: number; radius: number }> = {
   model: {
@@ -2703,6 +2704,52 @@ const trainStatusBadgeTone = (train: EMapTrain) => {
   return { fill: "rgba(3,5,6,0.92)", stroke: "rgba(248,250,252,0.35)", text: "#F8FAFC" };
 };
 
+const metroLayerTone: Record<MapLayer | "core", { line: string; fill: string; text: string }> = {
+  core: { line: "#111827", fill: "#f8fafc", text: "#020617" },
+  model: { line: "#0284c7", fill: "#e0f2fe", text: "#075985" },
+  memory: { line: "#16a34a", fill: "#dcfce7", text: "#166534" },
+  agents: { line: "#eab308", fill: "#fef9c3", text: "#713f12" },
+  automation: { line: "#f97316", fill: "#ffedd5", text: "#9a3412" },
+  apps: { line: "#9333ea", fill: "#f3e8ff", text: "#581c87" },
+  external: { line: "#0891b2", fill: "#cffafe", text: "#155e75" },
+};
+
+const metroConnectionTone = (connection: SystemConnection, from: SystemStation, to: SystemStation) => {
+  if (connection.status === "blocked") return "#ef4444";
+  if (connection.status === "warning") return "#f59e0b";
+  if (connection.status === "standby" || connection.status === "unknown") return "#94a3b8";
+  if (from.layer === "core") return metroLayerTone[to.layer].line;
+  if (to.layer === "core") return metroLayerTone[from.layer].line;
+  if (from.layer === to.layer) return metroLayerTone[from.layer].line;
+  return "#64748b";
+};
+
+const metroStationSize = (station: SystemStation, selected: boolean, overview: boolean) => {
+  if (station.layer === "core") return overview ? 88 : 50;
+  if (station.hub) return overview ? 68 : 38;
+  if (station.appHub) return overview ? 58 : 34;
+  if (selected) return overview ? 48 : 30;
+  return overview ? 32 : 19;
+};
+
+const MetroTrainMarker = ({ train }: { train: EMapTrain }) => {
+  const badgeTone = trainStatusBadgeTone(train);
+  const markerColor = trainStatusColor(train);
+  const label = trainPurposeLabel(train);
+  return (
+    <g>
+      <rect x="-31" y="-15" width="62" height="30" rx="10" fill={badgeTone.fill} stroke={badgeTone.stroke} strokeWidth="3" />
+      <rect x="-20" y="-7" width="12" height="9" rx="2" fill="#e0f2fe" opacity="0.92" />
+      <rect x="-3" y="-7" width="12" height="9" rx="2" fill="#e0f2fe" opacity="0.92" />
+      <circle cx="-18" cy="15" r="4" fill={markerColor} stroke="#020617" strokeWidth="1.4" />
+      <circle cx="18" cy="15" r="4" fill={markerColor} stroke="#020617" strokeWidth="1.4" />
+      <text x="0" y="5" textAnchor="middle" fill={badgeTone.text} fontFamily="monospace" fontSize="8" fontWeight="950">
+        {label}
+      </text>
+    </g>
+  );
+};
+
 const parkingAvatarOffset = (agentId: string, station?: EMapStation) => {
   if (!station?.neighborhood?.includes("yard")) return { x: 0, y: 0 };
   const hash = Array.from(agentId).reduce((total, char) => total + char.charCodeAt(0), 0);
@@ -4735,7 +4782,7 @@ export default function SystemMapApp({ onNotify, onOpenApp }: SystemMapAppProps)
   };
 
   return (
-    <div className="relative flex-1 min-h-0 overflow-hidden bg-[#7dd3fc] text-slate-950">
+    <div className="relative flex-1 min-h-0 overflow-hidden bg-[#f8fafc] text-slate-950">
       <svg
         ref={svgRef}
         width="100%"
@@ -4745,7 +4792,7 @@ export default function SystemMapApp({ onNotify, onOpenApp }: SystemMapAppProps)
         data-map-qa-off-land={mapQaReport.offLandStations}
         data-map-qa-hidden-issues={mapQaReport.hiddenIssueRoutes}
         data-map-qa-visible-routes={mapQaReport.visibleRoutes}
-        className="absolute inset-0 h-full w-full touch-none select-none overscroll-none bg-[#7dd3fc]"
+        className="absolute inset-0 h-full w-full touch-none select-none overscroll-none bg-[#f8fafc]"
         style={{ touchAction: "none", overscrollBehavior: "none", WebkitUserSelect: "none" }}
         onPointerDown={handleCanvasPointerDown}
         onPointerMove={handleCanvasPointerMove}
@@ -4830,6 +4877,308 @@ export default function SystemMapApp({ onNotify, onOpenApp }: SystemMapAppProps)
             <path d="M0,0 L6,3 L0,6 Z" fill="#ef4444" />
           </marker>
         </defs>
+        {USE_PUBLIC_METRO_MAP ? (
+          <>
+            <rect width={CANVAS_WIDTH} height={CANVAS_HEIGHT} fill="#f8fafc" />
+            <rect width={CANVAS_WIDTH} height={CANVAS_HEIGHT} fill="url(#system-map-grid)" opacity="0.75" />
+            <path d="M0 900 H6000 M0 2200 H6000 M0 3500 H6000 M0 4800 H6000 M0 6100 H6000 M0 7400 H6000" stroke="#e2e8f0" strokeWidth="9" opacity="0.55" />
+            <path d="M850 0 V9000 M2050 0 V9000 M3000 0 V9000 M4200 0 V9000 M5350 0 V9000" stroke="#e2e8f0" strokeWidth="9" opacity="0.55" />
+            <g opacity="0.18">
+              <text x="230" y="260" fill="#0f172a" fontFamily="monospace" fontSize="64" fontWeight="950" letterSpacing="8">BALOSS METRO MAP</text>
+              <text x="4480" y="8820" fill="#0f172a" fontFamily="monospace" fontSize="36" fontWeight="900" letterSpacing="5">PUBLIC BUILD</text>
+            </g>
+
+            <g pointerEvents="none" opacity="0.94">
+              {overviewMetroLines.map((line) => (
+                <g key={`metro-overview-${line.id}`}>
+                  <path d={polylinePath(line.points)} fill="none" stroke="#f8fafc" strokeWidth="70" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d={polylinePath(line.points)} fill="none" stroke="rgba(15,23,42,0.16)" strokeWidth="54" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d={polylinePath(line.points)} fill="none" stroke={line.color} strokeWidth="32" strokeLinecap="round" strokeLinejoin="round" />
+                </g>
+              ))}
+            </g>
+
+            {showDetailedTransport && visibleConnections.map((connection, index) => {
+              const from = stationById.get(connection.from);
+              const to = stationById.get(connection.to);
+              if (!from || !to) return null;
+              const selectedConnection = from.id === selectedId || to.id === selectedId;
+              const offset = ((index % 5) - 2) * 18;
+              const color = metroConnectionTone(connection, from, to);
+              const d = metroPath(from, to, offset);
+              return (
+                <g key={connection.id} pointerEvents="none" opacity={selectedConnection ? 1 : 0.86}>
+                  <path d={d} fill="none" stroke="#f8fafc" strokeWidth={from.id === "core" || to.id === "core" ? "44" : "32"} strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d={d}
+                    fill="none"
+                    stroke="rgba(15,23,42,0.15)"
+                    strokeWidth={from.id === "core" || to.id === "core" ? "36" : "25"}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d={d}
+                    fill="none"
+                    stroke={color}
+                    strokeWidth={from.id === "core" || to.id === "core" ? "18" : "13"}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeDasharray={connection.status === "standby" || connection.status === "unknown" ? "34 24" : connection.status === "warning" ? "22 18" : undefined}
+                    filter={connection.status === "running" || selectedConnection ? "url(#system-map-glow)" : undefined}
+                  />
+                </g>
+              );
+            })}
+
+            {dataPacketConnections.map((connection, index) => {
+              const from = stationById.get(connection.from);
+              const to = stationById.get(connection.to);
+              if (!from || !to) return null;
+              const tone = statusTone[connection.status];
+              const d = metroPath(from, to, ((index % 4) - 1.5) * 16);
+              const packetLabel = connection.status === "warning" ? "CHK" : connection.status === "running" ? "RUN" : "OK";
+              const fixedX = from.x + (to.x - from.x) * (0.3 + (index % 4) * 0.12);
+              const fixedY = from.y + (to.y - from.y) * (0.3 + (index % 4) * 0.12);
+              return (
+                <g key={`data-packet-${connection.id}`} className="cursor-pointer" onClick={() => selectStation(to)} onPointerDown={(event) => event.stopPropagation()}>
+                  {reducedMotion ? (
+                    <g transform={`translate(${fixedX} ${fixedY})`}>
+                      <rect x="-18" y="-10" width="36" height="20" rx="10" fill="#f8fafc" stroke={tone.stroke} strokeWidth="3" />
+                      <text x="0" y="4" textAnchor="middle" fill="#0f172a" fontFamily="monospace" fontSize="8" fontWeight="950">{packetLabel}</text>
+                    </g>
+                  ) : (
+                    <g>
+                      <rect x="-18" y="-10" width="36" height="20" rx="10" fill="#f8fafc" stroke={tone.stroke} strokeWidth="3" filter="url(#system-map-glow)" />
+                      <text x="0" y="4" textAnchor="middle" fill="#0f172a" fontFamily="monospace" fontSize="8" fontWeight="950">{packetLabel}</text>
+                      <animateMotion path={d} dur={`${5.2 + (index % 5) * 0.7}s`} begin={`${index * 0.35}s`} repeatCount="indefinite" rotate="auto" />
+                    </g>
+                  )}
+                </g>
+              );
+            })}
+
+            {overviewActivityPulses.map(({ train, color, x, y }, index) => {
+              const pulseColor = trainStatusColor(train);
+              return (
+                <g
+                  key={`overview-pulse-${train.id}-${index}`}
+                  className="cursor-pointer"
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={() => selectTrain(train)}
+                  onTouchEnd={(event) => handleTouchSelect(event, () => selectTrain(train))}
+                >
+                  <circle cx={x} cy={y} r="31" fill="#f8fafc" stroke={color} strokeWidth="7" opacity="0.96" />
+                  <circle cx={x} cy={y} r="13" fill={pulseColor} stroke={trainIsStandby(train) ? "#f8fafc" : "#0f172a"} strokeWidth="3" opacity="0.98">
+                    <animate attributeName="r" values="10;15;10" dur={`${3 + (index % 4)}s`} repeatCount="indefinite" />
+                  </circle>
+                </g>
+              );
+            })}
+
+            {snapshot && showEMapInspectionLayer && recordValues<EMapRoute>(snapshot.emapRuntime.routes).filter(emapRouteVisible).slice(0, showParkingDetail ? 56 : 36).map((route, index) => {
+              const from = snapshot.emapRuntime.stations[route.fromStationId];
+              const to = snapshot.emapRuntime.stations[route.toStationId];
+              const line = snapshot.emapRuntime.lines[route.lineId];
+              if (!from || !to || !line) return null;
+              if (!route.dependency && zoomLevel < 3.15 && !selectedBlocks.length && !selectedEMapEntityId) return null;
+              if (route.dependency && !selectedBlocks.length && !selectedEMapEntityId) return null;
+              if (route.dependency && zoomLevel < 4.1 && !selectedEMapEntityId) return null;
+              const d = metroPath(from, to, ((index % 5) - 2) * 16);
+              return (
+                <g key={route.id} pointerEvents="none" opacity={route.dependency ? 0.55 : 0.74}>
+                  <path d={d} fill="none" stroke="#f8fafc" strokeWidth={route.dependency ? "18" : "26"} strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d={d}
+                    fill="none"
+                    stroke={route.dependency ? "#94a3b8" : line.color}
+                    strokeWidth={route.dependency ? "8" : "12"}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeDasharray={route.dependency ? "20 18" : undefined}
+                  />
+                </g>
+              );
+            })}
+
+            {snapshot && showMicroTransport && displayTrains.filter(trainMatchesBlocks).map((train) => {
+              const route = snapshot.emapRuntime.routes[train.routeId];
+              const from = route ? snapshot.emapRuntime.stations[route.fromStationId] : snapshot.emapRuntime.stations[train.fromStationId];
+              const to = route ? snapshot.emapRuntime.stations[route.toStationId] : snapshot.emapRuntime.stations[train.toStationId];
+              if (!from || !to) return null;
+              const d = metroPath(from, to);
+              const duration = Math.max(3.8, Math.min(14, 7 / Math.max(0.35, train.speed)));
+              const point = {
+                x: from.x + (to.x - from.x) * (train.status === "arriving" ? 0.92 : trainIsError(train) ? 0.55 : trainIsWaitingPlanning(train) ? 0.68 : trainIsStandby(train) ? 0.28 : 0.42),
+                y: from.y + (to.y - from.y) * (train.status === "arriving" ? 0.92 : trainIsError(train) ? 0.55 : trainIsWaitingPlanning(train) ? 0.68 : trainIsStandby(train) ? 0.28 : 0.42),
+              };
+              return (
+                <g
+                  key={train.id}
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={() => selectTrain(train)}
+                  onTouchEnd={(event) => handleTouchSelect(event, () => selectTrain(train))}
+                  className="cursor-pointer"
+                >
+                  {reducedMotion || trainIsStationary(train) ? (
+                    <g transform={`translate(${point.x} ${point.y})`}>
+                      <circle cx="0" cy="0" r="38" fill="transparent" stroke="rgba(15,23,42,0.18)" strokeWidth="2" strokeDasharray="5 7" />
+                      <MetroTrainMarker train={train} />
+                    </g>
+                  ) : (
+                    <g>
+                      <MetroTrainMarker train={train} />
+                      <animateMotion path={d} dur={`${duration}s`} repeatCount={train.status === "arriving" ? "1" : "indefinite"} rotate="auto" />
+                    </g>
+                  )}
+                </g>
+              );
+            })}
+
+            {snapshot && showEMapInspectionLayer && recordValues<EMapStation>(snapshot.emapRuntime.stations).filter((station) => emapStationMatchesBlocks(station.id)).map((station) => {
+              const entity = snapshot.emapRuntime.entities[station.entityId];
+              const line = snapshot.emapRuntime.lines[station.lineId];
+              if (!entity || !line) return null;
+              const selectedEntity = entity.id === selectedEMapEntityId;
+              const important = entity.status === "error" || entity.status === "blocked" || entity.type === "main_brain" || selectedEntity;
+              if (!important && zoomLevel < 2.85 && !selectedBlocks.length) return null;
+              const showLabel = selectedEntity || entity.type === "main_brain" || (important && zoomLevel > 3.25) || showFineLabels;
+              const entityStatus = entity.status === "error" || entity.status === "blocked" ? "blocked" : entity.status === "active" || entity.status === "busy" || entity.status === "monitoring" ? "running" : entity.status === "offline" ? "unknown" : "standby";
+              const tone = statusTone[entityStatus];
+              return (
+                <g
+                  key={`emap-station-${station.id}`}
+                  className="cursor-pointer"
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={() => selectEMapEntity(entity.id)}
+                  onTouchEnd={(event) => handleTouchSelect(event, () => selectEMapEntity(entity.id))}
+                >
+                  <circle cx={station.x} cy={station.y} r={selectedEntity ? 47 : 34} fill="transparent" />
+                  <circle cx={station.x} cy={station.y} r={selectedEntity ? 28 : 20} fill="#f8fafc" stroke={line.color} strokeWidth={selectedEntity ? "8" : "5"} />
+                  <circle cx={station.x} cy={station.y} r={selectedEntity ? 13 : 9} fill={tone.stroke} stroke="#020617" strokeWidth="2" />
+                  {showLabel && (
+                    <g transform={`translate(${station.x} ${station.y + 44})`}>
+                      <rect x="-76" y="-14" width="152" height="28" rx="11" fill="rgba(248,250,252,0.94)" stroke="rgba(15,23,42,0.16)" strokeWidth="1.5" />
+                      <text x="0" y="5" textAnchor="middle" fill="#0f172a" fontFamily="monospace" fontSize="9" fontWeight="900">
+                        {compact(entity.name, 18)}
+                      </text>
+                    </g>
+                  )}
+                </g>
+              );
+            })}
+
+            {snapshot && showEMapInspectionLayer && activeEMapAvatars.filter(avatarMatchesBlocks).map((avatar) => {
+              if (avatar.trainId && !reducedMotion) return null;
+              const station = avatar.stationId ? snapshot.emapRuntime.stations[avatar.stationId] : undefined;
+              if (!station) return null;
+              const entity = snapshot.emapRuntime.entities[avatar.agentId];
+              const parkingOffset = parkingAvatarOffset(avatar.agentId, station);
+              return (
+                <g
+                  key={avatar.id}
+                  transform={`translate(${station.x - 11 + parkingOffset.x} ${station.y - 39 + parkingOffset.y})`}
+                  opacity={avatar.status === "offline" ? 0.42 : 1}
+                  className="cursor-pointer"
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={() => selectEMapEntity(entity?.id || avatar.agentId)}
+                  onTouchEnd={(event) => handleTouchSelect(event, () => selectEMapEntity(entity?.id || avatar.agentId))}
+                >
+                  <circle cx="11" cy="11" r="22" fill="transparent" />
+                  <PixelAvatar avatarId={avatar.avatarId} state={avatar.status} size={22} />
+                </g>
+              );
+            })}
+
+            {visibleStations.map((station) => {
+              const tone = statusTone[station.status];
+              const stationJob = station.jobId ? jobById.get(station.jobId) : undefined;
+              const heat = heatTone(stationHeatLevel(station, stationJob));
+              const proofActive = proofStationIds.has(station.id);
+              const retryActive = retryStationIds.has(station.id);
+              const selectedStation = station.id === selectedId;
+              const size = metroStationSize(station, selectedStation, overviewMode);
+              const layerTone = metroLayerTone[station.layer];
+              const showLabel = station.layer === "core" || station.hub || station.appHub || selectedStation || (showFineLabels && zoomLevel > 4.4) || (station.status === "blocked" && zoomLevel > 2.4);
+              const showMetric = Boolean(station.metric) && showLabel && (selectedStation || ((station.hub || station.appHub) && zoomLevel > 2.2) || zoomLevel > 4.8);
+              const labelText = compact(station.label, station.layer === "core" ? 24 : station.hub || station.appHub ? 20 : 16);
+              const labelFontSize = overviewMode
+                ? station.layer === "core" ? 46 : station.hub ? 34 : station.appHub ? 30 : 22
+                : station.layer === "core" ? 18 : station.hub || station.appHub ? 14 : 10;
+              const pillWidth = Math.max(overviewMode ? 230 : 118, Math.min(overviewMode ? 520 : 260, labelText.length * (overviewMode ? 28 : 13) + (overviewMode ? 86 : 42)));
+              const pillHeight = overviewMode ? 76 : 36;
+              return (
+                <g
+                  key={station.id}
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={() => selectStation(station)}
+                  onTouchEnd={(event) => handleTouchSelect(event, () => selectStation(station))}
+                  className="cursor-pointer"
+                >
+                  {heat.label && (
+                    <circle
+                      cx={station.x}
+                      cy={station.y}
+                      r={size + 24}
+                      fill={heat.fill}
+                      stroke={heat.stroke}
+                      strokeWidth="5"
+                      opacity={heat.label === "HOT" ? 0.72 : 0.5}
+                      filter="url(#system-map-heat-glow)"
+                    />
+                  )}
+                  {proofActive && (
+                    <circle cx={station.x} cy={station.y} r={size + 20} fill="none" stroke="#22c55e" strokeWidth="6" opacity="0.72">
+                      {!reducedMotion && (
+                        <>
+                          <animate attributeName="r" values={`${size + 12};${size + 48};${size + 12}`} dur="3.8s" repeatCount="indefinite" />
+                          <animate attributeName="opacity" values="0.74;0.08;0.74" dur="3.8s" repeatCount="indefinite" />
+                        </>
+                      )}
+                    </circle>
+                  )}
+                  {retryActive && (
+                    <g pointerEvents="none" transform={`translate(${station.x} ${station.y})`}>
+                      <path
+                        d={`M ${-(size + 26)} 0 A ${size + 26} ${size + 26} 0 1 1 ${size + 10} ${-(size + 20)}`}
+                        fill="none"
+                        stroke="#ef4444"
+                        strokeWidth="6"
+                        strokeLinecap="round"
+                        markerEnd="url(#retry-arrowhead)"
+                      />
+                      {!reducedMotion && <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="2.8s" repeatCount="indefinite" />}
+                    </g>
+                  )}
+                  <g filter={selectedStation || station.status === "running" ? "url(#system-map-glow)" : undefined}>
+                    <circle cx={station.x} cy={station.y} r={size + 12} fill="#f8fafc" stroke="rgba(15,23,42,0.18)" strokeWidth="5" />
+                    <circle cx={station.x} cy={station.y} r={size} fill={layerTone.fill} stroke={station.status === "blocked" ? "#ef4444" : layerTone.line} strokeWidth={station.layer === "core" ? "10" : station.hub || station.appHub ? "8" : "6"} />
+                    <circle cx={station.x} cy={station.y} r={Math.max(7, size * 0.34)} fill={tone.stroke} stroke="#020617" strokeWidth="3" />
+                    {(station.hub || station.appHub || station.layer === "core") && (
+                      <text x={station.x} y={station.y + (overviewMode ? 16 : 8)} textAnchor="middle" fill={layerTone.text} fontFamily="monospace" fontSize={overviewMode ? station.layer === "core" ? "42" : "29" : station.layer === "core" ? "22" : "15"} fontWeight="950">
+                        {station.iconTag || (station.layer === "core" ? "BC" : station.layer.slice(0, 2).toUpperCase())}
+                      </text>
+                    )}
+                  </g>
+                  {showLabel && (
+                    <g transform={`translate(${station.x} ${station.y + size + (overviewMode ? 72 : 42)})`}>
+                      <rect x={-pillWidth / 2} y={-pillHeight / 2} width={pillWidth} height={pillHeight} rx={overviewMode ? "28" : "15"} fill="rgba(248,250,252,0.96)" stroke="rgba(15,23,42,0.18)" strokeWidth={overviewMode ? "5" : "2"} />
+                      <text x="0" y={overviewMode ? "14" : "6"} textAnchor="middle" fill="#0f172a" fontSize={labelFontSize} fontFamily="monospace" fontWeight="950">
+                        {labelText}
+                      </text>
+                    </g>
+                  )}
+                  {showMetric && (
+                    <text x={station.x} y={station.y + size + (overviewMode ? 132 : 72)} textAnchor="middle" fill="rgba(15,23,42,0.66)" fontSize={overviewMode ? "20" : "10"} fontFamily="monospace" fontWeight="800">
+                      {compact(station.metric || "", 18)}
+                    </text>
+                  )}
+                </g>
+              );
+            })}
+          </>
+        ) : (
+          <>
         <rect width={CANVAS_WIDTH} height={CANVAS_HEIGHT} fill="#7dd3fc" />
         <rect width={CANVAS_WIDTH} height={CANVAS_HEIGHT} fill="url(#world-map-water-tile)" opacity="0.38" />
         <path d="M-160 6120Q830 5840 1780 6060T3680 5940T6260 6060V9180H-160z" fill="#38bdf8" opacity="0.55" />
@@ -5413,6 +5762,8 @@ export default function SystemMapApp({ onNotify, onOpenApp }: SystemMapAppProps)
             </g>
           );
         })}
+          </>
+        )}
       </svg>
 
       <div className="pointer-events-none absolute inset-0 z-20">
