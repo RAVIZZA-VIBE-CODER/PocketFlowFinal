@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>PocketFlow Local Port</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #050607;
+        --panel: #111317;
+        --line: #2a2d33;
+        --green: #22c55e;
+        --cyan: #67e8f9;
+        --muted: #8fa2bd;
+        --text: #f4f7fb;
+        --warn: #f59e0b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 24% 0%, rgba(34, 197, 94, 0.16), transparent 28rem),
+          radial-gradient(circle at 88% 18%, rgba(103, 232, 249, 0.12), transparent 22rem),
+          var(--bg);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .shell {
+        width: min(760px, calc(100% - 28px));
+        margin: 0 auto;
+        padding: 30px 0 42px;
+      }
+
+      .hero,
+      .card {
+        border: 1px solid var(--line);
+        background: rgba(17, 19, 23, 0.9);
+        border-radius: 24px;
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+      }
+
+      .hero {
+        padding: 24px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .mark {
+        display: grid;
+        place-items: center;
+        width: 64px;
+        height: 64px;
+        border: 1px solid rgba(103, 232, 249, 0.36);
+        border-radius: 20px;
+        background: rgba(6, 17, 23, 0.9);
+        color: var(--cyan);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 24px;
+        font-weight: 900;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(36px, 8vw, 64px);
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      .subtitle,
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .subtitle {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 22px;
+        border: 1px solid rgba(34, 197, 94, 0.28);
+        border-radius: 999px;
+        padding: 8px 12px;
+        background: rgba(34, 197, 94, 0.1);
+        color: var(--green);
+        font: 700 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: currentColor;
+        box-shadow: 0 0 20px currentColor;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 16px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .card h2 {
+        margin: 0 0 12px;
+        color: var(--muted);
+        font: 800 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .ticket {
+        overflow-wrap: anywhere;
+        border: 1px solid rgba(103, 232, 249, 0.18);
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.28);
+        padding: 14px;
+        color: var(--cyan);
+        font: 600 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      }
+
+      .scopes {
+        display: grid;
+        gap: 10px;
+      }
+
+      .scope {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border: 1px solid rgba(143, 162, 189, 0.18);
+        border-radius: 14px;
+        padding: 12px 14px;
+        color: #dbe6f5;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      .scope span:last-child {
+        color: var(--green);
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      button,
+      a.button {
+        min-height: 56px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        color: var(--text);
+        background: #15171c;
+        font: 900 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+        cursor: pointer;
+      }
+
+      button.primary,
+      a.primary {
+        border-color: rgba(103, 232, 249, 0.24);
+        background: var(--cyan);
+        color: #001013;
+      }
+
+      button.green {
+        border-color: rgba(34, 197, 94, 0.28);
+        background: var(--green);
+        color: #020603;
+      }
+
+      .log {
+        min-height: 92px;
+        white-space: pre-wrap;
+        color: #cbd5e1;
+        line-height: 1.55;
+      }
+
+      .note {
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      @media (max-width: 620px) {
+        .grid,
+        .actions {
+          grid-template-columns: 1fr;
+        }
+
+        .brand {
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div class="brand">
+          <div class="mark">PF</div>
+          <div>
+            <h1>PocketFlow<br />Local Port</h1>
+            <div class="subtitle">Permissioned companion relay</div>
+          </div>
+        </div>
+        <div class="status"><span class="dot"></span><span id="state">Ticket loaded</span></div>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Signed Ticket</h2>
+          <div class="ticket" id="ticket">unsigned</div>
+          <p class="note" id="expires">This ticket is short lived. The connected device still decides whether to grant each browser or system permission.</p>
+        </article>
+
+        <article class="card">
+          <h2>Allowed Scopes</h2>
+          <div class="scopes" id="scopes"></div>
+        </article>
+      </section>
+
+      <section class="card" style="margin-top: 16px;">
+        <h2>Connect</h2>
+        <div class="actions">
+          <button class="primary" id="open-native">Open Installed Port</button>
+          <button class="green" id="download-app">Download Local Port</button>
+          <button id="folder">Grant Work Folder</button>
+          <button id="copy">Copy Pairing Manifest</button>
+        </div>
+        <p class="note">
+          Use this on a trusted computer or second device. It creates a local pairing manifest for PocketFlow and exposes only the scopes signed by the phone.
+        </p>
+      </section>
+
+      <section class="card" style="margin-top: 16px;">
+        <h2>Session Log</h2>
+        <div class="log" id="log"></div>
+      </section>
+    </main>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const ticket = params.get("ticket") || "unsigned";
+      const host = params.get("host") || location.origin;
+      const expires = params.get("expires") || "";
+      const scopes = (params.get("scopes") || "")
+        .split(",")
+        .map((scope) => scope.trim())
+        .filter(Boolean);
+
+      const scopeLabels = {
+        "archive.read": "Read PocketFlow Archive",
+        "archive.write": "Write PocketFlow Archive",
+        "spino.context": "Use Spino memory/context",
+        "browser.preview": "Open browser previews",
+        "codex.workspace": "Prepare Codex workspace handoff",
+        "terminal.request": "Queue terminal requests",
+        "screen.mirror": "Request screen mirror"
+      };
+
+      const manifest = {
+        app: "PocketFlow Local Port",
+        version: 1,
+        ticket,
+        host,
+        expires,
+        scopes,
+        createdAt: new Date().toISOString()
+      };
+
+      const log = (text) => {
+        const target = document.getElementById("log");
+        target.textContent = `${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}  ${text}\n${target.textContent}`;
+      };
+
+      const encodeBase64 = (text) => {
+        const bytes = new TextEncoder().encode(text);
+        let binary = "";
+        bytes.forEach((byte) => {
+          binary += String.fromCharCode(byte);
+        });
+        return btoa(binary);
+      };
+
+      const openSavedInReader = (saved) => {
+        if (!saved || !saved.ok) return;
+        const detail = {
+          phase: "complete",
+          fileName: saved.fileName || "PocketFlow-Local-Port.html",
+          mimeType: saved.mimeType || "text/html",
+          nativeUri: saved.nativeUri || "",
+          path: saved.path || "",
+          size: saved.size || 0,
+          message: "Downloaded to PocketFlow Archive."
+        };
+        if (window.AndroidPocketFlowBridge?.openPocketFlowReaderForDownload) {
+          window.AndroidPocketFlowBridge.openPocketFlowReaderForDownload(JSON.stringify(detail));
+        }
+      };
+
+      document.getElementById("ticket").textContent = ticket;
+      document.getElementById("expires").textContent = expires
+        ? `Expires: ${new Date(expires).toLocaleString()}. Re-sign from the phone if this expires.`
+        : "No expiry received. Re-sign from the phone for a fresh permission ticket.";
+      document.getElementById("scopes").innerHTML = scopes.length
+        ? scopes.map((scope) => `<div class="scope"><span>${scopeLabels[scope] || scope}</span><span>allowed</span></div>`).join("")
+        : '<div class="scope"><span>No scopes signed</span><span>locked</span></div>';
+
+      document.getElementById("open-native").addEventListener("click", () => {
+        const deepLink = `pocketflow-local-port://connect?ticket=${encodeURIComponent(ticket)}&host=${encodeURIComponent(host)}&scopes=${encodeURIComponent(scopes.join(","))}`;
+        location.href = deepLink;
+        log("Native Local Port deep link sent. If nothing opens, download this page and use the web companion.");
+      });
+
+      document.getElementById("download-app").addEventListener("click", async () => {
+        const source = `<!doctype html>\n${document.documentElement.outerHTML}`;
+        if (window.PocketFlowReceiveBridge?.saveWebDownload) {
+          try {
+            const saved = await window.PocketFlowReceiveBridge.saveWebDownload(
+              "PocketFlow-Local-Port.html",
+              "text/html",
+              encodeBase64(source)
+            );
+            if (saved && saved.ok) {
+              log("Saved Local Port to PocketFlow Archive. Opening it now.");
+              openSavedInReader(saved);
+              return;
+            }
+            log(saved && saved.message ? saved.message : "PocketFlow bridge could not save this file.");
+          } catch (error) {
+            log(`PocketFlow bridge save failed: ${error && error.message ? error.message : error}`);
+          }
+        }
+        const blob = new Blob([source], { type: "text/html" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "PocketFlow-Local-Port.html";
+        link.click();
+        URL.revokeObjectURL(link.href);
+        log("Downloaded the standalone Local Port web companion.");
+      });
+
+      document.getElementById("folder").addEventListener("click", async () => {
+        if (!("showDirectoryPicker" in window)) {
+          log("Folder access is not available in this browser. Use Chrome/Edge desktop or the native companion.");
+          return;
+        }
+        try {
+          const folder = await window.showDirectoryPicker({ mode: scopes.includes("archive.write") ? "readwrite" : "read" });
+          log(`Work folder granted: ${folder.name}`);
+        } catch (error) {
+          log("Folder access cancelled.");
+        }
+      });
+
+      document.getElementById("copy").addEventListener("click", async () => {
+        const text = JSON.stringify(manifest, null, 2);
+        try {
+          await navigator.clipboard.writeText(text);
+          log("Pairing manifest copied.");
+        } catch {
+          const blob = new Blob([text], { type: "application/json" });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "PocketFlow-Local-Port.pflowport.json";
+          link.click();
+          URL.revokeObjectURL(link.href);
+          log("Pairing manifest downloaded.");
+        }
+      });
+
+      log("Local Port setup ready.");
+    </script>
+  </body>
+</html>

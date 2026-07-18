@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "router-systemmap",
+    "label": "Router / SystemMap",
+    "component": "SystemMapApp.tsx",
+    "branch": "codex/public/router-systemmap",
+    "fileCount": 30,
+    "downloadablePackage": "AppDownloads/public/router-systemmap.tar.gz"
+  },
+  {
+    "slug": "baloss-llm",
+    "label": "Baloss LLM",
+    "component": "SpinoLLMApp.tsx",
+    "branch": "codex/public/baloss-llm",
+    "fileCount": 29,
+    "downloadablePackage": "AppDownloads/public/baloss-llm.tar.gz"
+  },
+  {
+    "slug": "builder",
+    "label": "Builder",
+    "component": "BuilderApp.tsx",
+    "branch": "codex/public/builder",
+    "fileCount": 8,
+    "downloadablePackage": "AppDownloads/public/builder.tar.gz"
+  },
+  {
+    "slug": "archive-reader",
+    "label": "Archive / Reader",
+    "component": "ReaderApp.tsx",
+    "branch": "codex/public/archive-reader",
+    "fileCount": 9,
+    "downloadablePackage": "AppDownloads/public/archive-reader.tar.gz"
+  },
+  {
+    "slug": "memopad-calenotes",
+    "label": "MemoPad / Calenotes",
+    "component": "CalenotesApp.tsx",
+    "branch": "codex/public/memopad-calenotes",
+    "fileCount": 5,
+    "downloadablePackage": "AppDownloads/public/memopad-calenotes.tar.gz"
+  },
+  {
+    "slug": "newsflow",
+    "label": "NewsFlow",
+    "component": "NewsFlowApp.tsx",
+    "branch": "codex/public/newsflow",
+    "fileCount": 5,
+    "downloadablePackage": "AppDownloads/public/newsflow.tar.gz"
+  },
+  {
+    "slug": "notebook-agent",
+    "label": "Notebook / Moltbook Agent Template",
+    "component": "MoltbookAgentApp.tsx",
+    "branch": "codex/public/notebook-agent",
+    "fileCount": 4,
+    "downloadablePackage": "AppDownloads/public/notebook-agent.tar.gz"
+  },
+  {
+    "slug": "codex-relay",
+    "label": "Codex Relay",
+    "component": "RelayApp.tsx",
+    "branch": "codex/public/codex-relay",
+    "fileCount": 3,
+    "downloadablePackage": "AppDownloads/public/codex-relay.tar.gz"
+  },
+  {
+    "slug": "screen-relay",
+    "label": "Screen Relay",
+    "component": "SecondScreenApp.tsx",
+    "branch": "codex/public/screen-relay",
+    "fileCount": 3,
+    "downloadablePackage": "AppDownloads/public/screen-relay.tar.gz"
+  },
+  {
+    "slug": "terminal",
+    "label": "Terminal",
+    "component": "TerminalApp.tsx",
+    "branch": "codex/public/terminal",
+    "fileCount": 12,
+    "downloadablePackage": "AppDownloads/public/terminal.tar.gz"
+  },
+  {
+    "slug": "pocketweb",
+    "label": "PocketWeb",
+    "component": "PocketWebApp.tsx",
+    "branch": "codex/public/pocketweb",
+    "fileCount": 3,
+    "downloadablePackage": "AppDownloads/public/pocketweb.tar.gz"
+  },
+  {
+    "slug": "web-monitor",
+    "label": "Web Monitor",
+    "component": "WWWApp.tsx",
+    "branch": "codex/public/web-monitor",
+    "fileCount": 4,
+    "downloadablePackage": "AppDownloads/public/web-monitor.tar.gz"
+  }
+]

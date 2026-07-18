@@ -1,0 +1,6 @@
+{
+  "name": "BOB The Builder",
+  "description": "A pocket operating system interface that features a fully integrated Home Screen launching Receive Hub, Builder, Studio, and interactive device controls (WiFi, Bluetooth, Settings, and more).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

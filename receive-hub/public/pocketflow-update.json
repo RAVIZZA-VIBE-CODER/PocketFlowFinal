@@ -1,0 +1,13 @@
+{
+  "app": "PocketFlow",
+  "versionName": "0.9.34",
+  "versionCode": 97,
+  "apk": "/downloads/pocketflow-latest.apk",
+  "notes": [
+    "Includes dedicated multi-session Terminal app with Baloss LLM ask/explain commands",
+    "Includes Notebook Agent template in navigation",
+    "Includes public Archive, Builder, MemoPad, NewsFlow and Router updates",
+    "Includes Relay, Baloss LLM, Reader, Terminal, Web and public monitor surfaces",
+    "Install this APK on the phone if ADB is not connected"
+  ]
+}

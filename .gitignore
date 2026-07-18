@@ -1,0 +1,19 @@
+# PocketFlowFinal public release
+.DS_Store
+.env
+.env.*
+*.log
+
+# Dependencies and generated builds are validated locally, not published.
+node_modules/
+dist/
+dist-*/
+receive-hub/node_modules/
+receive-hub/dist/
+receive-hub/dist-*/
+
+# Phone/private runtime artifacts.
+receive-hub/android-launcher/
+receive-hub/model-cache/
+receive-hub/public/downloads/
+receive-hub/public/private-discovery/

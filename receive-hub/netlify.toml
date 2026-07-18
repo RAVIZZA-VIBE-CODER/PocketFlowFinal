@@ -1,0 +1,8 @@
+[build]
+  command = "npm run build:lakehouse-public"
+  publish = "dist-lakehouse-public"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
