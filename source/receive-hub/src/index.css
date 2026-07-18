@@ -1,0 +1,460 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+@source "../index.html";
+@source "./**/*.{ts,tsx}";
+@source not "../native/**";
+@source not "../android-launcher/**";
+@source not "../dist/**";
+@source not "../models/**";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Custom colors matching the Specialist Hardware / Tool theme styling */
+  --color-brand-orange-500: #22c55e;
+  --color-brand-orange-600: #16a34a;
+  --color-brand-orange-700: #15803d;
+  --color-brand-dark-900: #151619;
+  --color-brand-dark-950: #0c0c0d;
+  --color-border-custom: #2a2c32;
+  --color-btn-secondary: #2a2c32;
+  --color-text-p: #ffffff;
+  --color-text-s: #8e9299;
+}
+
+/* Custom scrollbar and aesthetics */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background-color: #0c0c0d;
+}
+
+body {
+  background-color: #0c0c0d;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
+}
+
+html.pocketflow-phone-performance[data-pocketflow-thermal="warm"] .animate-pulse,
+html.pocketflow-phone-performance[data-pocketflow-thermal="warm"] .animate-ping,
+html.pocketflow-phone-performance[data-pocketflow-thermal="warm"] .animate-bounce {
+  animation-duration: 3s !important;
+}
+
+html.pocketflow-phone-performance[data-pocketflow-thermal="hot"] .animate-pulse,
+html.pocketflow-phone-performance[data-pocketflow-thermal="hot"] .animate-ping,
+html.pocketflow-phone-performance[data-pocketflow-thermal="hot"] .animate-bounce {
+  animation: none !important;
+}
+
+html.pocketflow-phone-performance[data-pocketflow-thermal="hot"] .animate-spin {
+  animation-duration: 4s !important;
+}
+
+html.pocketflow-phone-performance[data-pocketflow-thermal="warm"] .animate-spin {
+  animation-duration: 6s !important;
+}
+
+html.pocketflow-phone-performance[data-pocketflow-thermal="hot"] .animate-fade-in,
+html.pocketflow-phone-performance[data-pocketflow-thermal="hot"] .animate-slide-up {
+  animation: none !important;
+}
+
+html.pocketflow-phone-performance[data-pocketflow-app]:not([data-pocketflow-app="radar"]) .radar-sweep,
+html.pocketflow-phone-performance[data-pocketflow-thermal="warm"] .radar-sweep {
+  animation-duration: 14s !important;
+}
+
+html.pocketflow-phone-performance[data-pocketflow-thermal="hot"] .radar-sweep {
+  animation: none !important;
+}
+
+html.pocketflow-android-low-power *,
+html.pocketflow-android-low-power *::before,
+html.pocketflow-android-low-power *::after {
+  transition-duration: 80ms !important;
+  scroll-behavior: auto !important;
+}
+
+html.pocketflow-android-low-power .animate-pulse,
+html.pocketflow-android-low-power .animate-ping,
+html.pocketflow-android-low-power .animate-bounce,
+html.pocketflow-android-low-power .animate-spin,
+html.pocketflow-android-low-power .animate-fade-in,
+html.pocketflow-android-low-power .animate-slide-up {
+  animation: none !important;
+}
+
+html.pocketflow-android-low-power[data-pocketflow-app="spino"] .animate-pulse,
+html.pocketflow-android-low-power[data-pocketflow-app="spino"] .animate-fade-in,
+html.pocketflow-android-low-power[data-pocketflow-app="spino"] .animate-slide-up,
+html.pocketflow-android-low-power[data-pocketflow-app="radar"] .radar-sweep {
+  animation-duration: 8s !important;
+  animation-iteration-count: infinite !important;
+}
+
+html.pocketflow-android-low-power[data-pocketflow-app="home"] .radar-sweep,
+html.pocketflow-android-low-power[data-pocketflow-app="home"] [data-pf-heavy-motion="true"] {
+  animation: none !important;
+}
+
+html.pocketflow-navigation-saver *,
+html.pocketflow-navigation-saver *::before,
+html.pocketflow-navigation-saver *::after {
+  animation: none !important;
+  transition-duration: 0ms !important;
+  scroll-behavior: auto !important;
+  text-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.pocketflow-navigation-saver .shadow-xl,
+html.pocketflow-navigation-saver .shadow-2xl,
+html.pocketflow-navigation-saver .shadow-lg,
+html.pocketflow-navigation-saver .lcd-watch-panel {
+  box-shadow: none !important;
+}
+
+html.pocketflow-navigation-saver .group-hover\:scale-105,
+html.pocketflow-navigation-saver .active\:scale-95,
+html.pocketflow-navigation-saver .active\:scale-\[0\.99\],
+html.pocketflow-navigation-saver .transition,
+html.pocketflow-navigation-saver .transition-all,
+html.pocketflow-navigation-saver .transition-colors,
+html.pocketflow-navigation-saver .transition-transform {
+  transform: none !important;
+}
+
+html.pocketflow-navigation-saver .pocketflow-screen-scroll {
+  contain: layout paint style;
+  will-change: auto;
+}
+
+#root {
+  position: fixed;
+  inset: 0;
+}
+
+html.lakehouse-public-document,
+body.lakehouse-public-document {
+  height: auto;
+  min-height: 100%;
+}
+
+html.lakehouse-public-document {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: auto;
+}
+
+body.lakehouse-public-document {
+  overflow: visible;
+  overscroll-behavior-y: auto;
+}
+
+html.lakehouse-public-document #root {
+  position: relative;
+  inset: auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: auto;
+  overflow: visible;
+}
+
+.lakehouse-public-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.lakehouse-public-app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: visible;
+}
+
+.lakehouse-public-app > .pocketflow-screen-scroll {
+  flex: none;
+  min-height: 0;
+  overflow: visible;
+  overscroll-behavior-y: auto;
+  padding-bottom: 3rem;
+}
+
+.pocketflow-phone-shell {
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: 100vw;
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: pan-y;
+}
+
+.pocketflow-screen-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  contain: paint;
+  will-change: scroll-position;
+}
+
+@supports (content-visibility: auto) {
+  .pocketflow-screen-scroll > article,
+  .pocketflow-screen-scroll > section,
+  .pocketflow-screen-scroll [data-pf-virtual-card="true"] {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 380px;
+  }
+}
+
+.lcd-watch-panel {
+  position: relative;
+  min-height: 92px;
+  padding: 10px 14px 9px;
+  overflow: hidden;
+  border: 1px solid #2a2c32;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.035), transparent 40%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 38px),
+    #070809;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.025), 0 12px 28px rgba(0,0,0,0.28);
+}
+
+.lcd-watch-grid {
+  display: grid;
+  grid-template-columns: minmax(48px, 0.58fr) minmax(0, 1.9fr) minmax(48px, 0.58fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+}
+
+.lcd-watch-time {
+  color: #b9e8ff;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 44px;
+  line-height: 0.92;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 14px rgba(56,189,248,0.24), 1px 0 0 rgba(186,230,253,0.48);
+}
+
+.lcd-watch-cell {
+  min-width: 0;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+}
+
+.lcd-watch-cell span {
+  display: block;
+  color: #5fffe2;
+  font-size: 8px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.lcd-watch-cell strong {
+  display: block;
+  margin-top: 4px;
+  color: #cbd5e1;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.lcd-watch-footer {
+  display: grid;
+  grid-template-columns: minmax(38px, 0.82fr) minmax(52px, 1fr) auto minmax(48px, 1fr) minmax(54px, 0.92fr);
+  gap: 6px;
+  border-top: 1px solid rgba(42,44,50,0.82);
+  padding-top: 7px;
+  color: #5fffe2;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 7px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  align-items: center;
+}
+
+.lcd-watch-footer span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lcd-watch-footer span:nth-child(3) {
+  color: #f8fafc;
+  text-align: center;
+}
+
+.lcd-watch-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.app-card-health.app-card-unavailable > div:first-child > div:first-child,
+.app-card-health.app-card-unavailable > div:last-child span {
+  background: rgba(148, 163, 184, 0.06) !important;
+  border-color: rgba(148, 163, 184, 0.16) !important;
+  color: #64748b !important;
+  filter: grayscale(1);
+  opacity: 0.48;
+  box-shadow: none !important;
+}
+
+.app-card-health.app-card-unavailable:hover {
+  border-color: #2a2c32 !important;
+}
+
+.app-card-health.app-card-unavailable > div:first-child > div:first-child svg {
+  stroke-width: 2;
+}
+
+.lcd-watch-instagram {
+  width: 10px;
+  height: 10px;
+  color: #f472b6;
+  filter: drop-shadow(0 0 6px rgba(244, 114, 182, 0.36));
+  stroke-width: 2.4;
+}
+
+.lcd-watch-footer span:last-child {
+  text-align: right;
+}
+
+.lcd-watch-footer .lcd-watch-price {
+  color: #fbbf24;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.28);
+  white-space: nowrap;
+}
+
+.lcd-watch-footer .lcd-watch-temp {
+  color: #67e8f9;
+  text-shadow: 0 0 8px rgba(103, 232, 249, 0.22);
+}
+
+.lcd-watch-footer .lcd-watch-weather {
+  color: #bbf7d0;
+  text-shadow: 0 0 8px rgba(34, 197, 94, 0.2);
+}
+
+@media (max-width: 360px) {
+  .lcd-watch-time {
+    font-size: 38px;
+  }
+
+  .lcd-watch-panel {
+    padding-inline: 10px;
+  }
+
+  .lcd-watch-footer {
+    gap: 4px;
+    font-size: 6.5px;
+  }
+}
+
+.builder-matrix-shell {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(0, 255, 102, 0.1), transparent 34%),
+    linear-gradient(180deg, #010301 0%, #020704 100%);
+}
+
+.builder-matrix-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.13;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 255, 102, 0.11) 0 1px,
+    transparent 1px 7px
+  );
+}
+
+.builder-matrix-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+.builder-matrix-header {
+  box-shadow: inset 0 -1px 0 rgba(0, 255, 102, 0.08), 0 12px 24px rgba(0, 0, 0, 0.28);
+}
+
+.builder-matrix-workspace::before,
+.builder-matrix-workspace::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.builder-matrix-workspace::before {
+  background:
+    linear-gradient(rgba(0, 255, 102, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 102, 0.06) 1px, transparent 1px);
+  background-size: 42px 42px;
+  opacity: 0.32;
+}
+
+.builder-matrix-workspace::after {
+  top: -34%;
+  height: 34%;
+  background: linear-gradient(180deg, transparent, rgba(0, 255, 102, 0.08), transparent);
+  animation: builder-matrix-scan 8s linear infinite;
+}
+
+@keyframes builder-matrix-scan {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(430%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .builder-matrix-workspace::after {
+    animation: none;
+    opacity: 0.28;
+  }
+}

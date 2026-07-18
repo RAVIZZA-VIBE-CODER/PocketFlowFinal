@@ -1,0 +1,13 @@
+{
+  "edition": "public",
+  "branch": "codex/public/pocketweb",
+  "slug": "pocketweb",
+  "label": "PocketWeb",
+  "component": "PocketWebApp.tsx",
+  "generatedAt": "2026-07-18T14:24:59.156Z",
+  "sourceFiles": [
+    "src/components/PocketWebApp.tsx",
+    "src/index.css",
+    "src/types.ts"
+  ]
+}
