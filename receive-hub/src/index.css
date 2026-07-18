@@ -287,6 +287,10 @@ html.lakehouse-public-document #root {
   background: #07100c;
 }
 
+.pf-public-phone-screen > div > header {
+  padding-top: 30px;
+}
+
 .pf-public-phone-screen .sm\:block {
   display: none !important;
 }
@@ -345,6 +349,10 @@ html.lakehouse-public-document #root {
 
   .pf-public-phone-screen {
     border-radius: 0;
+  }
+
+  .pf-public-phone-screen > div > header {
+    padding-top: 0.75rem;
   }
 }
 

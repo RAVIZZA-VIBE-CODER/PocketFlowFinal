@@ -200,7 +200,6 @@ export default function App() {
         <header className="sticky top-0 z-40 border-b border-emerald-300/15 bg-[#07100c]/95 px-4 py-3 backdrop-blur">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.32em] text-emerald-300">PocketFlowFinal</p>
               <h1 className="text-2xl font-black tracking-tight">{activeMeta.label}</h1>
             </div>
             <div className="hidden rounded-2xl border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-xs font-bold text-emerald-100 sm:block">
