@@ -549,7 +549,7 @@ export const classifySpinoIntent = (prompt: string, onlineAllowed: boolean): Spi
     privacy = "local_files";
     confidence = 0.88;
     rationale = "BigBrain or external memory workflow detected.";
-  } else if (match(/\b(public server|server monitor|server health|port|service health|moltbook server|crm server|web monitor)\b/)) {
+  } else if (match(/\b(public server|server monitor|server health|port|service health|moltbook server|crm server)\b/)) {
     primaryAgentId = "server";
     taskType = "server";
     privacy = "device";

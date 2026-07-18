@@ -12,7 +12,6 @@ export type PocketFlowAppId =
   | "secondscreen"
   | "relay"
   | "terminal"
-  | "www"
   | "pocketweb"
   | "spino"
   | "systemmap"
@@ -169,14 +168,6 @@ export const POCKETFLOW_APP_TOOLS: PocketFlowAppTool[] = [
     label: "PocketWeb",
     aliases: ["browser", "web", "pocketweb", "internet", "search", "research", "website"],
     summary: "PocketFlow browser and web search surface.",
-    readable: false,
-    automatable: true,
-  },
-  {
-    id: "www",
-    label: "Web Monitor",
-    aliases: ["www", "monitor", "web monitor"],
-    summary: "Public-safe web monitor shell with no private endpoints.",
     readable: false,
     automatable: true,
   },

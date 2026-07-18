@@ -9,7 +9,6 @@ import {
   BookOpen,
   Cable,
   FileCode2,
-  Folder,
   Globe2,
   Map,
   MessageSquareText,
@@ -34,7 +33,6 @@ const RelayApp = lazy(() => import("./components/RelayApp"));
 const SecondScreenApp = lazy(() => import("./components/SecondScreenApp"));
 const TerminalApp = lazy(() => import("./components/TerminalApp"));
 const PocketWebApp = lazy(() => import("./components/PocketWebApp"));
-const WWWApp = lazy(() => import("./components/WWWApp"));
 const SystemMapApp = lazy(() => import("./components/SystemMapApp"));
 
 type PublicAppId =
@@ -48,8 +46,7 @@ type PublicAppId =
   | "relay"
   | "secondscreen"
   | "terminal"
-  | "pocketweb"
-  | "www";
+  | "pocketweb";
 
 const PUBLIC_APP_IDS = new Set<string>([
   "systemmap",
@@ -66,7 +63,6 @@ const PUBLIC_APP_IDS = new Set<string>([
   "secondscreen",
   "terminal",
   "pocketweb",
-  "www",
 ]);
 
 const PUBLIC_NAV_APP_IDS = new Set<string>([
@@ -81,7 +77,6 @@ const PUBLIC_NAV_APP_IDS = new Set<string>([
   "secondscreen",
   "terminal",
   "pocketweb",
-  "www",
 ]);
 
 const normalizePublicAppId = (appId: string | null): PublicAppId => {
@@ -112,7 +107,6 @@ const apps: Array<{ id: PublicAppId; label: string; detail: string; icon: React.
   { id: "secondscreen", label: "Display", detail: "Second-screen viewer", icon: Cable },
   { id: "terminal", label: "Terminal", detail: "Phone terminal surface", icon: TerminalSquare },
   { id: "pocketweb", label: "Web", detail: "Pocket web workspace", icon: Globe2 },
-  { id: "www", label: "Web Monitor", detail: "Public monitor shell", icon: Folder },
 ];
 
 const Loading = () => (
@@ -253,7 +247,6 @@ export default function App() {
             {currentApp === "secondscreen" && <SecondScreenApp onNotify={(message, type) => notify(message, type)} />}
             {currentApp === "terminal" && <TerminalApp />}
             {currentApp === "pocketweb" && <PocketWebApp onNotify={(message, type) => notify(message, type)} />}
-            {currentApp === "www" && <WWWApp onNotify={(message, type) => notify(message, type)} onBack={() => setCurrentApp("systemmap")} />}
           </Suspense>
         </main>
           </div>

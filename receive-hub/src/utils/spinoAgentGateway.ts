@@ -215,7 +215,7 @@ export const refreshAgentGatewaySnapshot = async () => {
 };
 
 export const shouldUseAgentGateway = (prompt: string) =>
-  /\b(public gateway|agent gateway|access panel|systems? health|systems? status|check ratings?|ratings?|2nd\s*life|2ls|openclaw|dashforge|moltbook|private transfer|transfer desk|web monitor|www status|navigate www)\b/i.test(prompt);
+  /\b(public gateway|agent gateway|access panel|systems? health|systems? status|check ratings?|ratings?|2nd\s*life|2ls|openclaw|dashforge|moltbook|private transfer|transfer desk)\b/i.test(prompt);
 
 export const buildAgentGatewayContext = (snapshot: AgentGatewaySnapshot, limit = 12) => {
   if (!snapshot.systems.length) return "";
