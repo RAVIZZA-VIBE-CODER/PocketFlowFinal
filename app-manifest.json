@@ -1,0 +1,21 @@
+{
+  "edition": "public",
+  "branch": "codex/public/archive-reader",
+  "slug": "archive-reader",
+  "label": "Archive / Reader",
+  "component": "ArchivePublicApp.tsx",
+  "generatedAt": "2026-07-18T14:24:54.641Z",
+  "sourceFiles": [
+    "src/App.tsx",
+    "src/components/ArchivePublicApp.tsx",
+    "src/components/ReaderApp.tsx",
+    "src/index.css",
+    "src/types.ts",
+    "src/utils/archiveTracking.ts",
+    "src/utils/fileValidation.ts",
+    "src/utils/fileWorkspace.ts",
+    "src/utils/packagePreview.ts",
+    "src/utils/readerSupport.ts",
+    "src/utils/storage.ts"
+  ]
+}
