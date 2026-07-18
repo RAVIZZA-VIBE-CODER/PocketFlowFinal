@@ -24,7 +24,7 @@ import { getFileExtension, sanitizeFileName } from "./utils/fileValidation";
 import "./index.css";
 
 const BuilderApp = lazy(() => import("./components/BuilderApp"));
-const ReaderApp = lazy(() => import("./components/ReaderApp"));
+const ArchivePublicApp = lazy(() => import("./components/ArchivePublicApp"));
 const SpinoLLMApp = lazy(() => import("./components/SpinoLLMApp"));
 const CalenotesApp = lazy(() => import("./components/CalenotesApp"));
 const NewsFlowApp = lazy(() => import("./components/NewsFlowApp"));
@@ -231,10 +231,9 @@ export default function App() {
             {currentApp === "spino" && <SpinoLLMApp onNotify={(message, type) => notify(message, type)} onSystemAction={openPublicApp} />}
             {currentApp === "builder" && <BuilderApp onNotify={(message, type) => notify(message, type)} />}
             {currentApp === "archive" && (
-              <ReaderApp
+              <ArchivePublicApp
                 files={files}
                 activeFile={activeFile}
-                initialMode={activeFile ? "preview" : "workspace"}
                 onSelectFile={setActiveFile}
                 onUploadFile={(file) => void uploadArchiveFile(file)}
                 onSaveTextEdit={async () => notify("Text save is available in the full phone build.", "info")}
