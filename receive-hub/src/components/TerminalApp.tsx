@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
+  ChevronDown,
   Clipboard,
   Copy,
   Plus,
   Play,
+  Search,
   Settings2,
   ShieldCheck,
   TerminalSquare,
@@ -62,6 +64,15 @@ interface TerminalSession {
   updatedAt: string;
   lines: TerminalLine[];
   command: string;
+}
+
+interface TerminalCommandCatalogItem {
+  id: string;
+  label: string;
+  command: string;
+  group: "daily" | "automation" | "system" | "archive" | "native" | "llm";
+  description: string;
+  bridge?: boolean;
 }
 
 declare global {
@@ -141,7 +152,9 @@ const splitCommand = (command: string) => {
 
 const helpText = `PocketFlow Terminal commands
 
+commands              Show searchable command catalog as text.
 audit                 Run a local phone/webview audit.
+automations           Check known automation/newsletter/agent state.
 bridge                Check native command bridge status.
 ls /apps              List installed PocketFlow app routes.
 ls /archive           List recent Archive files.
@@ -165,6 +178,109 @@ set wrap on|off
 set native bridge|queue
 history               Show command history.
 clear                 Clear this terminal session.`;
+
+const COMMAND_CATALOG: TerminalCommandCatalogItem[] = [
+  {
+    id: "audit",
+    label: "Full terminal audit",
+    command: "audit",
+    group: "daily",
+    description: "Check WebView, archive, app routes, queued terminal requests and clipboard support.",
+  },
+  {
+    id: "automations",
+    label: "All automations status",
+    command: "automations",
+    group: "automation",
+    description: "Summarize known newsletter, NewsFlow, Moltbook, agent, relay and scraper local state.",
+  },
+  {
+    id: "newsletters",
+    label: "Newsletter campaigns",
+    command: "automations newsletter",
+    group: "automation",
+    description: "Filter automation state to campaign/newsletter-related records.",
+  },
+  {
+    id: "agents",
+    label: "Agent health",
+    command: "automations agent",
+    group: "automation",
+    description: "Filter automation state to agent health, queues, patrols and watchdog records.",
+  },
+  {
+    id: "bridge",
+    label: "Native bridge status",
+    command: "bridge",
+    group: "system",
+    description: "Check whether Android/native command execution is reachable from this shell.",
+  },
+  {
+    id: "llm-status",
+    label: "Local LLM status",
+    command: "llm status",
+    group: "llm",
+    description: "Check Baloss/local router readiness and last provider decision.",
+  },
+  {
+    id: "apps",
+    label: "List app routes",
+    command: "apps",
+    group: "system",
+    description: "Show registered PocketFlow app tools and summaries.",
+  },
+  {
+    id: "archive",
+    label: "Recent Archive files",
+    command: "ls /archive",
+    group: "archive",
+    description: "List recent files visible to the Terminal from PocketFlow Archive.",
+  },
+  {
+    id: "requests",
+    label: "Queued terminal requests",
+    command: "requests",
+    group: "system",
+    description: "Show native terminal commands queued for approved execution.",
+  },
+  {
+    id: "install-apk",
+    label: "Install APK from path",
+    command: "install /sdcard/Download/app.apk",
+    group: "native",
+    bridge: true,
+    description: "Template for opening the Android installer through the native bridge.",
+  },
+  {
+    id: "open-android-settings",
+    label: "Open Android settings",
+    command: "openapp com.android.settings",
+    group: "native",
+    bridge: true,
+    description: "Launch Android settings package when the native bridge is available.",
+  },
+  {
+    id: "native-processes",
+    label: "Native process snapshot",
+    command: "native ps -A | head -40",
+    group: "native",
+    bridge: true,
+    description: "Advanced bridge command to inspect running Android processes.",
+  },
+  {
+    id: "explain",
+    label: "Explain command first",
+    command: "explain native pm list packages",
+    group: "llm",
+    description: "Ask Baloss to explain a command before running anything dangerous.",
+  },
+];
+
+const commandCatalogText = () =>
+  [
+    "PocketFlow command catalog",
+    ...COMMAND_CATALOG.map((item) => `${item.command.padEnd(34)} ${item.label} - ${item.description}`),
+  ].join("\n");
 
 const themeClassNames: Record<TerminalSettingsState["theme"], string> = {
   pro: "bg-[#050608] text-[#e8edf4] border-[#2f3640]",
@@ -203,6 +319,8 @@ const TerminalApp = ({ onNotify }: { onNotify?: (message: string, type: "success
   const [files, setFiles] = useState<ReceivedFile[]>([]);
   const [loadingFiles, setLoadingFiles] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [commandMenuOpen, setCommandMenuOpen] = useState(false);
+  const [commandSearch, setCommandSearch] = useState("");
   const outputRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const activeSession = sessions.find((session) => session.id === activeSessionId) || sessions[0] || createSession(1);
@@ -365,6 +483,79 @@ const TerminalApp = ({ onNotify }: { onNotify?: (message: string, type: "success
     ].join("\n");
   };
 
+  const summarizeStoredAutomationValue = (key: string, rawValue: string) => {
+    if (!rawValue) return `${key}: empty`;
+    try {
+      const parsed = JSON.parse(rawValue);
+      if (Array.isArray(parsed)) {
+        const named = parsed
+          .slice(0, 4)
+          .map((item) => {
+            if (!item || typeof item !== "object") return "";
+            const record = item as Record<string, unknown>;
+            const name = record.name || record.label || record.title || record.id || "record";
+            const state =
+              record.enabled === false
+                ? "paused"
+                : record.enabled === true
+                  ? "enabled"
+                  : record.status || record.state || record.mode || "";
+            return `${String(name)}${state ? ` (${String(state)})` : ""}`;
+          })
+          .filter(Boolean);
+        return `${key}: ${parsed.length} item${parsed.length === 1 ? "" : "s"}${named.length ? ` / ${named.join(", ")}` : ""}`;
+      }
+      if (parsed && typeof parsed === "object") {
+        const record = parsed as Record<string, unknown>;
+        const markers = [
+          ["status", record.status],
+          ["state", record.state],
+          ["enabled", record.enabled],
+          ["running", record.running ?? record.isRunning],
+          ["mode", record.mode],
+          ["lastRun", record.lastRunAt ?? record.lastRun ?? record.updatedAt ?? record.checkedAt],
+          ["nextRun", record.nextRunAt ?? record.nextRun ?? record.nextCheckAt],
+          ["active", record.activeProfiles],
+          ["due", record.dueSlots],
+          ["sent", record.confirmedToday],
+          ["queue", record.queuePending ?? record.pending ?? record.queueLength],
+        ].filter(([, value]) => value !== undefined && value !== null && value !== "");
+        const profileCount = Array.isArray(record.profiles) ? `profiles=${record.profiles.length}` : "";
+        const campaignCount = Array.isArray(record.campaigns) ? `campaigns=${record.campaigns.length}` : "";
+        const summary = [
+          ...markers.map(([label, value]) => `${label}=${String(value)}`),
+          profileCount,
+          campaignCount,
+        ].filter(Boolean);
+        return `${key}: ${summary.length ? summary.join(" / ") : "object saved"}`;
+      }
+      return `${key}: ${String(parsed).slice(0, 120)}`;
+    } catch {
+      return `${key}: ${rawValue.slice(0, 140)}${rawValue.length > 140 ? "..." : ""}`;
+    }
+  };
+
+  const buildAutomationStatus = (filter = "") => {
+    const normalizedFilter = filter.trim().toLowerCase();
+    const keys = Object.keys(window.localStorage || {})
+      .filter((key) => /(newsletter|campaign|news|moltbook|agent|automation|relay|scraper|leadfinder|calendar|watchdog|outbox|queue|health)/i.test(key))
+      .filter((key) => !normalizedFilter || key.toLowerCase().includes(normalizedFilter))
+      .sort();
+    if (!keys.length) {
+      return normalizedFilter
+        ? `No local automation state matched "${normalizedFilter}". Try: automations, automations newsletter, automations agent.`
+        : "No automation/newsletter/agent state is visible in local browser storage yet.";
+    }
+    return [
+      "PocketFlow automation status",
+      `filter: ${normalizedFilter || "all"}`,
+      `records: ${keys.length}`,
+      "",
+      ...keys.slice(0, 36).map((key) => summarizeStoredAutomationValue(key, window.localStorage.getItem(key) || "")),
+      keys.length > 36 ? `\n${keys.length - 36} more records hidden. Use a filter such as \`automations newsletter\` or \`automations agent\`.` : "",
+    ].filter(Boolean).join("\n");
+  };
+
   const listArchiveFiles = () => {
     if (loadingFiles) return "Archive is still loading. Run `ls /archive` again in a second.";
     if (!files.length) return "Archive has no files visible to the web terminal.";
@@ -425,6 +616,7 @@ const TerminalApp = ({ onNotify }: { onNotify?: (message: string, type: "success
 
     if (!base) return "";
     if (base === "help") return helpText;
+    if (base === "commands") return commandCatalogText();
     if (base === "new") {
       createNewSession();
       return "Opened a new terminal page.";
@@ -446,6 +638,7 @@ const TerminalApp = ({ onNotify }: { onNotify?: (message: string, type: "success
     if (base === "ask") return askLocalLLM(rest, "code_help");
     if (base === "explain") return askLocalLLM(`Explain this terminal command, what it changes, and whether it is safe before running it:\n${rest}`, "explain");
     if (base === "audit") return buildAudit();
+    if (base === "automations" || base === "automation") return buildAutomationStatus(rest);
     if (base === "bridge") return runBridgeStatus();
     if (base === "date") return new Date().toString();
     if (base === "pwd") return "/pocketflow/phone";
@@ -590,6 +783,17 @@ const TerminalApp = ({ onNotify }: { onNotify?: (message: string, type: "success
     setActiveCommand(nextCursor === null ? "" : history[nextCursor] || "");
   };
 
+  const filteredCommandCatalog = useMemo(() => {
+    const query = commandSearch.trim().toLowerCase();
+    if (!query) return COMMAND_CATALOG;
+    return COMMAND_CATALOG.filter((item) =>
+      [item.label, item.command, item.group, item.description]
+        .join(" ")
+        .toLowerCase()
+        .includes(query),
+    );
+  }, [commandSearch]);
+
   return (
     <div className="flex-1 min-h-0 flex flex-col bg-[#0b0d10] text-slate-100 animate-fade-in">
       <div className="shrink-0 border-b border-white/10 bg-[#15171b] px-4 py-3">
@@ -719,6 +923,85 @@ const TerminalApp = ({ onNotify }: { onNotify?: (message: string, type: "success
             </button>
           ))}
         </div>
+      </div>
+
+      <div className="shrink-0 border-b border-white/10 bg-[#0b0d10] px-3 py-2">
+        <button
+          type="button"
+          onClick={() => setCommandMenuOpen((open) => !open)}
+          className="flex w-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2 text-left"
+          aria-expanded={commandMenuOpen}
+          data-testid="terminal-command-menu-toggle"
+        >
+          <span className="min-w-0">
+            <span className="block text-[9px] font-mono font-black uppercase tracking-[0.2em] text-sky-300">Command finder</span>
+            <span className="block truncate text-xs font-semibold text-slate-400">
+              Search audits, automations, newsletters, bridge, archive and native templates
+            </span>
+          </span>
+          <ChevronDown className={`h-4 w-4 shrink-0 text-slate-400 transition ${commandMenuOpen ? "rotate-180" : ""}`} />
+        </button>
+        {commandMenuOpen && (
+          <div className="mt-2 rounded-2xl border border-white/10 bg-black/40 p-2" data-testid="terminal-command-menu">
+            <label className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#050608] px-3 py-2">
+              <Search className="h-4 w-4 shrink-0 text-slate-500" />
+              <input
+                value={commandSearch}
+                onChange={(event) => setCommandSearch(event.target.value)}
+                className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-white outline-none placeholder:text-slate-600"
+                placeholder="Search: newsletter, agent, status, install, archive..."
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+              />
+            </label>
+            <div className="mt-2 max-h-60 space-y-2 overflow-auto pr-1">
+              {filteredCommandCatalog.length ? (
+                filteredCommandCatalog.map((item) => (
+                  <div key={item.id} className="rounded-2xl border border-white/10 bg-white/[0.035] p-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-[10px] font-mono font-black uppercase tracking-[0.18em] text-slate-500">{item.group}</span>
+                          {item.bridge && <span className="rounded-full border border-amber-300/25 bg-amber-300/10 px-2 py-0.5 text-[8px] font-black uppercase tracking-[0.14em] text-amber-200">bridge</span>}
+                        </div>
+                        <p className="mt-1 text-sm font-black text-white">{item.label}</p>
+                        <p className="mt-1 text-xs font-semibold text-slate-400">{item.description}</p>
+                        <code className="mt-2 block rounded-xl border border-sky-300/15 bg-sky-300/5 px-2 py-1 text-[11px] text-sky-200">{item.command}</code>
+                      </div>
+                      <div className="flex shrink-0 flex-col gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setActiveCommand(item.command);
+                            inputRef.current?.focus();
+                          }}
+                          className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[9px] font-mono font-black uppercase tracking-[0.16em] text-slate-200"
+                        >
+                          Insert
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCommandMenuOpen(false);
+                            void runCommand(item.command);
+                          }}
+                          className="rounded-xl border border-sky-300/30 bg-sky-300/15 px-3 py-2 text-[9px] font-mono font-black uppercase tracking-[0.16em] text-sky-100"
+                        >
+                          Run
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-4 text-sm font-semibold text-slate-500">
+                  No command matched this search. Try “newsletter”, “agent”, “bridge”, “archive”, or “install”.
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-3 gap-2 px-3 py-2 text-[9px] font-mono font-black uppercase tracking-[0.16em] text-slate-400">
