@@ -769,7 +769,7 @@ img {
 }
 
 .system-card small {
-  color: #777;
+  color: #737373;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 9px;
   letter-spacing: 0.13em;
@@ -2494,7 +2494,7 @@ img {
 
 .footer__links span {
   margin-bottom: 10px;
-  color: #666;
+  color: #858585;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 9px;
   letter-spacing: 0.16em;
@@ -2517,7 +2517,7 @@ img {
   gap: 20px;
   padding-top: 24px;
   border-top: 1px solid var(--line);
-  color: #626262;
+  color: #818181;
   font-size: 10px;
 }
 

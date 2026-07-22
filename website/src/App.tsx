@@ -178,11 +178,24 @@ function useReveal() {
 
 function AgentBrief({ context }: { context: AgentContext }) {
   useEffect(() => {
-    document.title = context.page === "PocketFlow home"
+    const title = context.page === "PocketFlow home"
       ? "PocketFlow | AI belongs in your pocket"
       : `${context.page} | PocketFlow`;
-    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-    if (description) description.content = context.summary;
+    const canonicalUrl = new URL(window.location.pathname, "https://pocketflow.it").toString();
+    const setMeta = (selector: string, content: string) => {
+      const node = document.querySelector<HTMLMetaElement>(selector);
+      if (node) node.content = content;
+    };
+
+    document.title = title;
+    setMeta('meta[name="description"]', context.summary);
+    setMeta('meta[property="og:title"]', title);
+    setMeta('meta[property="og:description"]', context.summary);
+    setMeta('meta[property="og:url"]', canonicalUrl);
+    setMeta('meta[name="twitter:title"]', title);
+    setMeta('meta[name="twitter:description"]', context.summary);
+    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (canonical) canonical.href = canonicalUrl;
 
     const id = "pocketflow-route-schema";
     document.getElementById(id)?.remove();
@@ -195,8 +208,8 @@ function AgentBrief({ context }: { context: AgentContext }) {
       name: context.page,
       description: context.summary,
       keywords: context.facts,
-      url: window.location.href,
-      isPartOf: { "@type": "WebSite", name: "PocketFlow", url: window.location.origin },
+      url: canonicalUrl,
+      isPartOf: { "@type": "WebSite", name: "PocketFlow", url: "https://pocketflow.it" },
       ...(context.links ? { sameAs: Object.values(context.links) } : {}),
     });
     document.head.appendChild(script);
@@ -216,7 +229,7 @@ function AgentBrief({ context }: { context: AgentContext }) {
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <span className={`brand ${compact ? "brand--compact" : ""}`} aria-label="PocketFlow">
-      <span className="brand__mark" aria-hidden="true"><img src="/pocketflow-mark.png" alt="" /></span>
+      <span className="brand__mark" aria-hidden="true"><img src="/pocketflow-mark.webp" alt="" width="152" height="152" /></span>
       <span className="brand__word">PocketFlow</span>
     </span>
   );
@@ -399,7 +412,7 @@ function HomePage({ path, navigate }: { path: string; navigate: (path: string) =
           </div>
         </div>
         <div className="home-hero__device">
-          <img className="home-hero__network" src="/hero-pocketflow-network.png" alt="PocketFlow network connecting a collection of phone-based AI workspaces" fetchPriority="high" />
+          <img className="home-hero__network" src="/hero-pocketflow-network.webp" alt="PocketFlow network connecting a collection of phone-based AI workspaces" width="1536" height="1024" fetchPriority="high" />
         </div>
         <a href="#philosophy" className="scroll-cue" aria-label="Scroll to learn more"><ArrowDown /></a>
       </section>
@@ -430,7 +443,7 @@ function HomePage({ path, navigate }: { path: string; navigate: (path: string) =
         </div>
         <div className="hardware-story__object" data-reveal>
           <div className="phone-silhouette">
-            <img src="/pocketflow-system-screen.png" alt="PocketFlow system core connecting twelve phone-based AI tools" loading="lazy" />
+            <img src="/pocketflow-system-screen.webp" alt="PocketFlow system core connecting twelve phone-based AI tools" width="941" height="1672" loading="lazy" />
           </div>
           {hardwareCapabilities.map((capability, index) => (
             <div

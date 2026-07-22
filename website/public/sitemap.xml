@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://pocketflow-os.vercel.app/</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/router-systemmap</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/baloss-llm</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/builder</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/archive-reader</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/memopad-calenotes</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/newsflow</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/notebook-agent</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/codex-relay</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/screen-relay</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/terminal</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/pocketweb</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/systems/web-monitor</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/contact</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/community</loc></url>
-  <url><loc>https://pocketflow-os.vercel.app/community/contest</loc></url>
+  <url><loc>https://pocketflow.it/</loc></url>
+  <url><loc>https://pocketflow.it/systems</loc></url>
+  <url><loc>https://pocketflow.it/systems/router-systemmap</loc></url>
+  <url><loc>https://pocketflow.it/systems/baloss-llm</loc></url>
+  <url><loc>https://pocketflow.it/systems/builder</loc></url>
+  <url><loc>https://pocketflow.it/systems/archive-reader</loc></url>
+  <url><loc>https://pocketflow.it/systems/memopad-calenotes</loc></url>
+  <url><loc>https://pocketflow.it/systems/newsflow</loc></url>
+  <url><loc>https://pocketflow.it/systems/notebook-agent</loc></url>
+  <url><loc>https://pocketflow.it/systems/codex-relay</loc></url>
+  <url><loc>https://pocketflow.it/systems/screen-relay</loc></url>
+  <url><loc>https://pocketflow.it/systems/terminal</loc></url>
+  <url><loc>https://pocketflow.it/systems/pocketweb</loc></url>
+  <url><loc>https://pocketflow.it/systems/web-monitor</loc></url>
+  <url><loc>https://pocketflow.it/contact</loc></url>
+  <url><loc>https://pocketflow.it/community</loc></url>
+  <url><loc>https://pocketflow.it/community/contest</loc></url>
 </urlset>
