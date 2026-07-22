@@ -386,7 +386,9 @@ function HomePage({ path, navigate }: { path: string; navigate: (path: string) =
           <p>A second-hand phone can become a private model interface, an automation dashboard, a team relay, and a portable memory layer. Local-first by design. Cloud-capable by choice.</p>
         </div>
         <div className="hardware-story__object" data-reveal>
-          <div className="phone-silhouette"><span>POCKETFLOW</span><i /><b>LOCAL</b></div>
+          <div className="phone-silhouette">
+            <img src="/pocketflow-system-screen.png" alt="PocketFlow system core connecting twelve phone-based AI tools" loading="lazy" />
+          </div>
           <div className="hardware-note hardware-note--one"><span>01</span> Reused hardware</div>
           <div className="hardware-note hardware-note--two"><span>02</span> Personal models</div>
           <div className="hardware-note hardware-note--three"><span>03</span> Visible automations</div>

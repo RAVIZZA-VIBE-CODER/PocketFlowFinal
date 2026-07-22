@@ -522,10 +522,6 @@ img {
   position: relative;
   width: min(330px, 64vw);
   aspect-ratio: 0.49;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 48px 26px 32px;
   overflow: hidden;
   border: 9px solid #171717;
   border-radius: 48px;
@@ -533,6 +529,14 @@ img {
   background: #000;
   box-shadow: 0 36px 70px rgba(0, 0, 0, 0.3);
   transform: rotate(5deg);
+}
+
+.phone-silhouette img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
 }
 
 .phone-silhouette::before {
@@ -545,26 +549,6 @@ img {
   border-radius: 20px;
   background: #1d1d1d;
   transform: translateX(-50%);
-}
-
-.phone-silhouette span {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
-  letter-spacing: 0.25em;
-}
-
-.phone-silhouette i {
-  width: 118%;
-  height: 1px;
-  align-self: center;
-  background: #fff;
-  transform: rotate(-35deg);
-}
-
-.phone-silhouette b {
-  font-size: 70px;
-  line-height: 0.8;
-  writing-mode: vertical-rl;
 }
 
 .hardware-note {
