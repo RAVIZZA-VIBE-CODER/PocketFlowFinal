@@ -105,9 +105,12 @@ img {
 }
 
 .brand__word {
+  color: transparent;
   font-size: 22px;
-  font-weight: 850;
+  font-weight: 900;
   letter-spacing: 0;
+  -webkit-text-stroke: 1.1px #fff;
+  paint-order: stroke fill;
 }
 
 .brand--compact .brand__mark {
@@ -117,6 +120,7 @@ img {
 
 .brand--compact .brand__word {
   font-size: 17px;
+  -webkit-text-stroke-width: 1.15px;
 }
 
 .desktop-nav {
@@ -2148,6 +2152,7 @@ img {
 
 .footer__top .brand__word {
   font-size: clamp(34px, 5vw, 72px);
+  -webkit-text-stroke-width: 1.8px;
 }
 
 .footer__top p {
@@ -2804,6 +2809,7 @@ img {
 
   .footer__top .brand__word {
     font-size: 36px;
+    -webkit-text-stroke-width: 1.35px;
   }
 
   .footer__links {
