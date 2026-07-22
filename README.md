@@ -8,6 +8,8 @@ Built by Tanuki Labs, PocketFlow explores a simple question:
 
 The current prototype already runs on a second-hand Realme Android phone. That matters: this is not imagined only for flagship hardware or expensive cloud stacks. PocketFlow is designed for mid-range and low-range Android devices, where a local model, a WebView shell, and carefully scoped automations can turn spare hardware into a playful but serious productivity surface.
 
+PocketFlow website: [www.pocketflow.it](https://www.pocketflow.it/)
+
 Tanuki Labs website: [www.tanukilabs.fun](https://www.tanukilabs.fun)
 
 ## Product Preview
