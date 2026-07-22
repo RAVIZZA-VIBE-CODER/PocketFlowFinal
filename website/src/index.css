@@ -341,16 +341,16 @@ img {
 }
 
 .home-hero__device .phone-artwork {
-  width: min(960px, 78vw);
+  width: 100%;
   height: 100%;
-  margin: 0 0 0 -16%;
+  margin: 0;
 }
 
 .home-hero__device .phone-artwork img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  object-fit: contain;
+  object-position: center bottom;
 }
 
 .scroll-cue {
@@ -921,8 +921,8 @@ img {
 .system-hero__phone .phone-artwork img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  object-fit: contain;
+  object-position: center bottom;
 }
 
 .moltbook-corner {
@@ -1580,16 +1580,24 @@ img {
   }
 
   .home-hero__device {
-    height: 38svh;
-    min-height: 310px;
+    height: auto;
+    min-height: 0;
+    display: flex;
+    justify-content: center;
     margin: 12px -20px 0;
+    overflow: visible;
   }
 
   .home-hero__device .phone-artwork {
-    width: 780px;
-    height: 560px;
-    margin: -24px 0 0 50%;
-    transform: translateX(-50%);
+    width: min(460px, 78vw);
+    height: auto;
+    margin: 0;
+    transform: none;
+  }
+
+  .home-hero__device .phone-artwork img {
+    width: 100%;
+    height: auto;
   }
 
   .scroll-cue {
@@ -1689,10 +1697,10 @@ img {
   }
 
   .system-hero__phone .phone-artwork img {
-    width: 900px;
-    max-width: none;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    transform: none;
   }
 
   .moltbook-corner {
@@ -1759,13 +1767,13 @@ img {
   }
 
   .home-hero__device {
-    height: 30svh;
-    min-height: 235px;
+    height: auto;
+    min-height: 0;
   }
 
   .home-hero__device .phone-artwork {
-    width: 650px;
-    height: 470px;
+    width: min(320px, 78vw);
+    height: auto;
   }
 
   .manifesto {
@@ -1863,10 +1871,6 @@ img {
 
   .system-hero__phone {
     height: 510px;
-  }
-
-  .system-hero__phone .phone-artwork img {
-    width: 730px;
   }
 
   .android-device {
