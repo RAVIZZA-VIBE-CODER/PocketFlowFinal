@@ -2460,9 +2460,12 @@ img {
 }
 
 .footer__top .brand__word {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: clamp(34px, 5vw, 72px);
-  letter-spacing: 0.045em;
-  -webkit-text-stroke-width: 1.45px;
+  font-weight: 500;
+  font-kerning: normal;
+  letter-spacing: 0.065em;
+  -webkit-text-stroke-width: 1.2px;
 }
 
 .footer__top p {
@@ -3208,7 +3211,7 @@ img {
 
   .footer__top .brand__word {
     font-size: 36px;
-    -webkit-text-stroke-width: 1.15px;
+    -webkit-text-stroke-width: 1px;
   }
 
   .footer__links {
