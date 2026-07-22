@@ -645,7 +645,6 @@ function SystemDetailPage({ system, path, navigate }: { system: SystemPage; path
         <section className="system-hero">
           <div className="system-hero__copy">
             <SiteLink to="/systems" navigate={navigate} className="back-link"><ArrowLeft /> All systems</SiteLink>
-            <div className="system-index"><i /> {String(index + 1).padStart(2, "0")} / {String(systems.length).padStart(2, "0")} · {system.category}</div>
             <h1>{system.name}</h1>
             <p className="system-hero__statement">{system.statement}</p>
             <p className="system-hero__description">{system.description}</p>
