@@ -705,11 +705,23 @@ img {
   font-size: 11px;
 }
 
-.system-card__accent {
-  width: 10px;
-  height: 10px;
+.system-card__icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
   margin-top: auto;
-  border-radius: 50%;
+}
+
+.system-card__icon svg {
+  width: 38px;
+  height: 38px;
+  stroke-width: 1.7;
+  transition: transform 220ms ease;
+}
+
+.system-card:hover .system-card__icon svg {
+  transform: translateY(-4px) scale(1.06);
 }
 
 .system-card h3 {

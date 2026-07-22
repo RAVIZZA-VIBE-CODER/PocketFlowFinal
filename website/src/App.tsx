@@ -2,6 +2,11 @@ import {
   ArrowDown,
   ArrowLeft,
   ArrowRight,
+  Activity,
+  Archive,
+  Blocks,
+  Bot,
+  BrainCircuit,
   CalendarDays,
   Check,
   ChevronDown,
@@ -13,9 +18,15 @@ import {
   LogIn,
   Menu,
   Monitor,
+  MonitorUp,
+  Newspaper,
+  NotebookPen,
+  RadioTower,
   RefreshCw,
+  Router,
   Send,
   Smartphone,
+  SquareTerminal,
   Trophy,
   Twitter,
   Upload,
@@ -288,6 +299,24 @@ function PhoneArtwork({ system, priority = false }: { system: SystemPage; priori
   );
 }
 
+function SystemIcon({ slug }: { slug: string }) {
+  switch (slug) {
+    case "router-systemmap": return <Router />;
+    case "baloss-llm": return <BrainCircuit />;
+    case "builder": return <Blocks />;
+    case "archive-reader": return <Archive />;
+    case "memopad-calenotes": return <NotebookPen />;
+    case "newsflow": return <Newspaper />;
+    case "notebook-agent": return <Bot />;
+    case "codex-relay": return <RadioTower />;
+    case "screen-relay": return <MonitorUp />;
+    case "terminal": return <SquareTerminal />;
+    case "pocketweb": return <Globe2 />;
+    case "web-monitor": return <Activity />;
+    default: return <Monitor />;
+  }
+}
+
 function WebMonitorPhone() {
   return (
     <figure className="phone-artwork phone-artwork--synthetic" aria-label="Web Monitor inside an Android phone shell">
@@ -384,7 +413,7 @@ function HomePage({ path, navigate }: { path: string; navigate: (path: string) =
         </div>
       </section>
 
-      <section className="systems-preview">
+      <section className="systems-preview" id="systems-preview">
         <div className="systems-preview__head" data-reveal>
           <div><span className="section-label">The public system</span><h2>Twelve ways into one idea.</h2></div>
           <SiteLink to="/systems" navigate={navigate} className="text-link">See all systems <ArrowRight /></SiteLink>
@@ -393,7 +422,7 @@ function HomePage({ path, navigate }: { path: string; navigate: (path: string) =
           {systems.slice(0, 6).map((system, index) => (
             <SiteLink key={system.slug} to={`/systems/${system.slug}`} navigate={navigate} className="system-card" onClick={() => undefined}>
               <div className="system-card__top"><span>0{index + 1}</span><ArrowRight /></div>
-              <div className="system-card__accent" style={{ backgroundColor: system.accent }} />
+              <div className="system-card__icon" style={{ color: system.accent }} aria-hidden="true"><SystemIcon slug={system.slug} /></div>
               <h3>{system.shortName}</h3>
               <p>{system.statement}</p>
               <small>{system.category}</small>

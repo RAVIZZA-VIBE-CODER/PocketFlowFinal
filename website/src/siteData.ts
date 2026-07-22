@@ -35,7 +35,7 @@ export const systems: SystemPage[] = [
   {
     slug: "baloss-llm",
     name: "Baloss LLM",
-    shortName: "Baloss",
+    shortName: "Baloss LLM",
     category: "Local intelligence",
     statement: "Small tasks stay close. Stronger reasoning wakes only when needed.",
     description: "The local model panel combines conversation, memory, tool routing, and system actions in a phone-native interface.",
