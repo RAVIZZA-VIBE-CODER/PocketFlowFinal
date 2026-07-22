@@ -1,0 +1,6 @@
+.env*
+.openai
+dist
+node_modules
+server
+*.log
