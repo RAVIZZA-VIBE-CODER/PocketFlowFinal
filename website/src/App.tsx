@@ -542,7 +542,7 @@ function GithubBounce() {
   const runwayRef = useRef<HTMLElement>(null);
   const ballRef = useRef<HTMLAnchorElement>(null);
   const ballBodyRef = useRef<HTMLSpanElement>(null);
-  const wakeRef = useRef<() => void>(() => undefined);
+  const wakeRef = useRef<(clientX?: number, clientY?: number) => void>(() => undefined);
 
   useEffect(() => {
     const runway = runwayRef.current;
@@ -639,15 +639,15 @@ function GithubBounce() {
       frame = window.requestAnimationFrame(tick);
     };
 
-    const launch = (dropFromTop: boolean) => {
+    const launch = (dropFromTop: boolean, directedVelocityX?: number, directedVelocityY?: number) => {
       measure();
       if (frame) window.cancelAnimationFrame(frame);
       bounceCount = 0;
       bounceTarget = Math.floor(random(5, 10));
       x = dropFromTop ? random(maximumX * 0.08, maximumX * 0.82) : x;
       y = dropFromTop ? Math.max(240, runway.clientHeight - ball.offsetHeight - 90) : 2;
-      velocityX = random(150, 390) * (Math.random() > 0.5 ? 1 : -1);
-      velocityY = dropFromTop ? random(-30, 50) : random(620, 920);
+      velocityX = directedVelocityX ?? random(150, 390) * (Math.random() > 0.5 ? 1 : -1);
+      velocityY = directedVelocityY ?? (dropFromTop ? random(-30, 50) : random(620, 920));
       angularVelocity = velocityX * random(0.55, 0.78);
       squash = 1;
       sleeping = false;
@@ -659,8 +659,32 @@ function GithubBounce() {
     measure();
     x = maximumX * 0.56;
     render();
-    wakeRef.current = () => {
-      if (!reducedMotion && sleeping) launch(false);
+    wakeRef.current = (clientX, clientY) => {
+      if (reducedMotion) return;
+      const bounds = ball.getBoundingClientRect();
+      const hasPointerPosition = typeof clientX === "number" && typeof clientY === "number";
+      const horizontalContact = hasPointerPosition
+        ? Math.max(-1, Math.min(1, (clientX - (bounds.left + bounds.width / 2)) / (bounds.width / 2)))
+        : 0;
+      const verticalContact = hasPointerPosition
+        ? Math.max(0, Math.min(1, (clientY - bounds.top) / bounds.height))
+        : 0.5;
+      const direction = Math.abs(horizontalContact) > 0.12
+        ? -Math.sign(horizontalContact)
+        : (Math.random() > 0.5 ? 1 : -1);
+      const directedVelocityX = direction * random(430, 620) * (0.82 + Math.abs(horizontalContact) * 0.3);
+      const directedVelocityY = random(650, 820) + verticalContact * 190;
+
+      if (sleeping) {
+        launch(false, directedVelocityX, directedVelocityY);
+        return;
+      }
+
+      velocityX = directedVelocityX;
+      velocityY = Math.max(velocityY, directedVelocityY * 0.72);
+      angularVelocity = velocityX * random(0.58, 0.78);
+      bounceCount = 0;
+      bounceTarget = Math.floor(random(4, 8));
     };
 
     const observer = new IntersectionObserver(([entry]) => {
@@ -689,7 +713,7 @@ function GithubBounce() {
         <p>Follow the source, fork an idea, or bring something entirely your own.</p>
       </div>
       <div className="github-runway__track" aria-hidden="true"><span /></div>
-      <a ref={ballRef} className="github-ball" href={githubUrl} target="_blank" rel="noreferrer" aria-label="Open PocketFlow on GitHub" onPointerEnter={() => wakeRef.current()} onFocus={() => wakeRef.current()}>
+      <a ref={ballRef} className="github-ball" href={githubUrl} target="_blank" rel="noreferrer" aria-label="Open PocketFlow on GitHub" onPointerEnter={(event) => wakeRef.current(event.clientX, event.clientY)} onPointerDown={(event) => wakeRef.current(event.clientX, event.clientY)} onFocus={() => wakeRef.current()}>
         <span ref={ballBodyRef} className="github-ball__body">
           <Github />
           <span className="github-ball__label">GitHub</span>

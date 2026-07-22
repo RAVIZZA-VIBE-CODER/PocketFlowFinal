@@ -108,10 +108,11 @@ img {
   display: block;
   color: transparent;
   font-size: 22px;
-  font-weight: 900;
-  line-height: 1.08;
-  letter-spacing: 0;
-  -webkit-text-stroke: 1.1px #fff;
+  font-weight: 760;
+  font-kerning: none;
+  line-height: 1.12;
+  letter-spacing: 0.035em;
+  -webkit-text-stroke: 1px #fff;
   paint-order: stroke fill;
 }
 
@@ -122,7 +123,8 @@ img {
 
 .brand--compact .brand__word {
   font-size: 17px;
-  -webkit-text-stroke-width: 1.15px;
+  letter-spacing: 0.04em;
+  -webkit-text-stroke-width: 0.9px;
 }
 
 .desktop-nav {
@@ -2159,7 +2161,8 @@ img {
 
 .footer__top .brand__word {
   font-size: clamp(34px, 5vw, 72px);
-  -webkit-text-stroke-width: 1.8px;
+  letter-spacing: 0.045em;
+  -webkit-text-stroke-width: 1.45px;
 }
 
 .footer__top p {
@@ -2819,7 +2822,7 @@ img {
 
   .footer__top .brand__word {
     font-size: 36px;
-    -webkit-text-stroke-width: 1.35px;
+    -webkit-text-stroke-width: 1.15px;
   }
 
   .footer__links {
