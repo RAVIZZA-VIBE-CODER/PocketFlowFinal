@@ -900,17 +900,6 @@ img {
   height: calc(100svh - 110px);
 }
 
-.system-hero__phone::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: 8%;
-  right: 4%;
-  width: 68%;
-  height: 74%;
-  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
-}
-
 .system-hero__phone .phone-artwork {
   position: relative;
   z-index: 1;
@@ -1119,6 +1108,10 @@ img {
 
 .phone-artwork {
   margin: 0;
+}
+
+.phone-artwork:not(.phone-artwork--synthetic) img {
+  clip-path: inset(2% 3% 2% 3% round 9% / 4.5%);
 }
 
 .phone-artwork--synthetic {
