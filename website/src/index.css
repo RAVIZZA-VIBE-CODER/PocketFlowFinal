@@ -1282,6 +1282,698 @@ img {
 .monitor-lines span:nth-child(3) { width: 92%; }
 .monitor-lines span:nth-child(4) { width: 55%; }
 
+.community-hero {
+  min-height: 88svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.55fr);
+  align-items: end;
+  gap: 7vw;
+  padding: 150px max(7vw, 32px) 90px;
+  border-bottom: 1px solid var(--line);
+}
+
+.community-hero h1 {
+  margin: 28px 0 0;
+  font-size: clamp(72px, 10vw, 154px);
+  line-height: 0.84;
+  letter-spacing: 0;
+}
+
+.community-hero h1 strong,
+.contest-hero h1 strong {
+  color: #000;
+  -webkit-text-stroke: 2px #fff;
+}
+
+.community-hero__aside {
+  padding-bottom: 8px;
+}
+
+.community-hero__aside p {
+  margin: 0 0 34px;
+  color: #aaa;
+  font-size: 19px;
+  line-height: 1.55;
+}
+
+.community-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0 max(7vw, 32px);
+  background: #f3f3f3;
+  color: #000;
+}
+
+.community-option {
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  padding: 46px 38px;
+  border-right: 1px solid #c7c7c7;
+}
+
+.community-option:last-child {
+  border-right: 0;
+}
+
+.community-option--active {
+  background: #d8ff35;
+}
+
+.community-option > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: #555;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.community-option > div svg {
+  width: 28px;
+  height: 28px;
+  color: #000;
+}
+
+.community-option h2 {
+  margin: 90px 0 24px;
+  font-size: clamp(34px, 3.5vw, 58px);
+  line-height: 0.98;
+}
+
+.community-option p {
+  max-width: 430px;
+  margin: 0;
+  color: #4d4d4d;
+  line-height: 1.55;
+}
+
+.community-option > a,
+.community-option__status {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 22px;
+  border-top: 1px solid #777;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.community-option > a svg {
+  width: 18px;
+}
+
+.community-option__status {
+  color: #777;
+}
+
+.community-principle {
+  min-height: 72svh;
+  display: grid;
+  grid-template-columns: 0.45fr 1fr;
+  align-items: center;
+  gap: 8vw;
+  padding: 120px max(7vw, 32px);
+}
+
+.community-principle > span {
+  align-self: start;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  color: #777;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.community-principle p {
+  margin: 0;
+  font-size: clamp(38px, 5.2vw, 78px);
+  line-height: 1.05;
+  font-weight: 720;
+}
+
+.community-live {
+  padding: 120px max(7vw, 32px);
+  border-bottom: 1px solid var(--line);
+}
+
+.community-live__heading {
+  max-width: 900px;
+  margin-bottom: 80px;
+}
+
+.community-live__heading h2 {
+  margin: 25px 0 0;
+  font-size: clamp(48px, 6vw, 92px);
+  line-height: 0.95;
+}
+
+.community-live__list {
+  border-top: 1px solid var(--line);
+}
+
+.community-live__row {
+  min-height: 128px;
+  display: grid;
+  grid-template-columns: 100px minmax(200px, 0.6fr) 1fr 26px;
+  align-items: center;
+  gap: 30px;
+  border-bottom: 1px solid var(--line);
+}
+
+.community-live__row > span {
+  color: #d8ff35;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.community-live__row strong {
+  font-size: clamp(23px, 2.4vw, 36px);
+}
+
+.community-live__row p {
+  color: #888;
+  line-height: 1.45;
+}
+
+.community-live__row:hover svg {
+  color: #d8ff35;
+  transform: translateX(5px);
+}
+
+.community-live__row svg {
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.github-runway {
+  position: relative;
+  min-height: 82svh;
+  overflow: hidden;
+  padding: 100px max(7vw, 32px) 0;
+  color: #000;
+  background: #fff;
+}
+
+.github-runway__copy {
+  position: relative;
+  z-index: 2;
+  max-width: 940px;
+}
+
+.github-runway__copy h2 {
+  margin: 28px 0 24px;
+  font-size: clamp(48px, 7vw, 108px);
+  line-height: 0.94;
+}
+
+.github-runway__copy p {
+  max-width: 600px;
+  margin: 0;
+  color: #555;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.github-runway__track {
+  position: absolute;
+  right: 0;
+  bottom: 42px;
+  left: 0;
+  height: 2px;
+  background: #000;
+}
+
+.github-runway__track span {
+  position: absolute;
+  left: 7vw;
+  bottom: 14px;
+  width: 72px;
+  height: 1px;
+  background: #999;
+  box-shadow: calc(86vw - 72px) 0 #999;
+}
+
+.github-ball {
+  position: absolute;
+  z-index: 3;
+  left: max(24px, 6vw);
+  bottom: 43px;
+  width: clamp(116px, 11vw, 164px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 3px solid #000;
+  border-radius: 50%;
+  color: #fff;
+  background: #050505;
+  box-shadow: inset -16px -18px 0 #1f1f1f, 0 20px 0 rgba(0, 0, 0, 0.12);
+  animation: github-ball-run 10s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  transform-origin: center;
+}
+
+.github-ball svg {
+  width: 44%;
+  height: 44%;
+}
+
+.github-ball span {
+  position: absolute;
+  bottom: 21%;
+  color: #aaa;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.github-ball:hover,
+.github-ball:focus-visible {
+  animation-play-state: paused;
+  outline: 4px solid #d8ff35;
+  outline-offset: 5px;
+}
+
+@keyframes github-ball-run {
+  0% { translate: 0 0; rotate: 0deg; }
+  12% { translate: 10vw -105px; rotate: 78deg; }
+  24% { translate: 20vw 0; rotate: 156deg; }
+  38% { translate: 32vw -150px; rotate: 248deg; }
+  52% { translate: 44vw 0; rotate: 340deg; }
+  66% { translate: 56vw -84px; rotate: 432deg; }
+  78% { translate: 66vw 0; rotate: 510deg; }
+  90% { translate: 76vw -54px; rotate: 588deg; }
+  100% { translate: calc(88vw - 164px) 0; rotate: 660deg; }
+}
+
+.contest-hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 130px max(7vw, 32px) 90px;
+}
+
+.contest-hero .back-link {
+  margin-bottom: auto;
+}
+
+.contest-hero__round {
+  width: fit-content;
+  margin-top: 60px;
+  padding: 9px 12px;
+  color: #000;
+  background: #d8ff35;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.contest-hero h1 {
+  margin: 30px 0 34px;
+  font-size: clamp(66px, 9vw, 142px);
+  line-height: 0.86;
+}
+
+.contest-hero > p {
+  max-width: 850px;
+  margin: 0;
+  color: #aaa;
+  font-size: 20px;
+  line-height: 1.55;
+}
+
+.contest-brief {
+  display: grid;
+  grid-template-columns: 0.8fr 1fr;
+  gap: 7vw;
+  padding: 130px max(7vw, 32px);
+  color: #000;
+  background: #d8ff35;
+}
+
+.contest-brief__lead h2 {
+  margin: 28px 0;
+  font-size: clamp(50px, 6vw, 92px);
+  line-height: 0.94;
+}
+
+.contest-brief__lead p {
+  max-width: 580px;
+  color: #3a4212;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.contest-criteria {
+  border-top: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+.contest-criteria > div {
+  min-height: 110px;
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+.contest-criteria span {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+}
+
+.contest-criteria p {
+  margin: 0;
+  font-size: clamp(22px, 2.3vw, 34px);
+  font-weight: 760;
+}
+
+.contest-submit {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.6fr) minmax(520px, 1fr);
+  align-items: start;
+  gap: 8vw;
+  padding: 140px max(7vw, 32px);
+}
+
+.contest-submit__intro {
+  position: sticky;
+  top: 110px;
+}
+
+.contest-submit__intro h2 {
+  margin: 28px 0;
+  font-size: clamp(48px, 5.5vw, 84px);
+  line-height: 0.95;
+}
+
+.contest-submit__intro p {
+  color: #999;
+  line-height: 1.6;
+}
+
+.campaign-page {
+  min-height: 100svh;
+  padding: 130px max(7vw, 32px) 110px;
+}
+
+.campaign-page__state,
+.campaign-page__missing {
+  margin-top: 22vh;
+}
+
+.campaign-page__missing > span {
+  color: #777;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.campaign-page__missing h1 {
+  margin: 24px 0 42px;
+  font-size: clamp(54px, 7vw, 104px);
+  line-height: 0.92;
+}
+
+.campaign-page__layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.7fr) minmax(480px, 0.8fr);
+  align-items: start;
+  gap: 8vw;
+  margin-top: 100px;
+}
+
+.campaign-page__intro h1 {
+  margin: 26px 0 30px;
+  font-size: clamp(52px, 6vw, 96px);
+  line-height: 0.92;
+}
+
+.campaign-page__intro p {
+  color: #aaa;
+  font-size: 19px;
+  line-height: 1.55;
+}
+
+.campaign-page__intro small {
+  display: block;
+  margin-top: 30px;
+  color: #d8ff35;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.campaign-form {
+  display: grid;
+  gap: 24px;
+  padding: 38px;
+  border: 1px solid var(--line);
+  background: #080808;
+}
+
+.campaign-form label {
+  display: grid;
+  gap: 9px;
+  color: #d0d0d0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.campaign-form input,
+.campaign-form textarea {
+  width: 100%;
+  padding: 13px 0;
+  border: 0;
+  border-bottom: 1px solid #3b3b3b;
+  border-radius: 0;
+  outline: none;
+  color: #fff;
+  background: transparent;
+}
+
+.campaign-form textarea {
+  resize: vertical;
+}
+
+.campaign-form input:focus,
+.campaign-form textarea:focus {
+  border-color: #fff;
+}
+
+.contest-form,
+.admin-console form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px 18px;
+  padding: 38px;
+  border: 1px solid var(--line);
+  background: #080808;
+}
+
+.contest-form label,
+.admin-login label,
+.admin-console label {
+  display: grid;
+  gap: 9px;
+  color: #d0d0d0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.contest-form input:not([type="checkbox"]):not([type="file"]),
+.contest-form textarea,
+.admin-login input,
+.admin-console input,
+.admin-console textarea,
+.admin-console select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 0;
+  border: 0;
+  border-bottom: 1px solid #3b3b3b;
+  border-radius: 0;
+  outline: none;
+  color: #fff;
+  background: transparent;
+}
+
+.contest-form textarea,
+.admin-console textarea {
+  resize: vertical;
+}
+
+.contest-form input:focus,
+.contest-form textarea:focus,
+.admin-login input:focus,
+.admin-console input:focus,
+.admin-console textarea:focus,
+.admin-console select:focus {
+  border-color: #fff;
+}
+
+.contest-form__wide,
+.admin-console__wide {
+  grid-column: 1 / -1;
+}
+
+.upload-field {
+  min-height: 126px;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  padding: 24px;
+  border: 1px dashed #555;
+  cursor: pointer;
+}
+
+.upload-field:hover {
+  border-color: #fff;
+}
+
+.upload-field input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.upload-field svg {
+  width: 34px;
+  height: 34px;
+}
+
+.upload-field > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+
+.upload-field small {
+  display: block;
+  margin-top: 7px;
+  color: #777;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.consent-field {
+  grid-template-columns: 20px 1fr;
+  align-items: start;
+  line-height: 1.5;
+}
+
+.consent-field input {
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: #d8ff35;
+}
+
+.admin-page {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(300px, 0.75fr) minmax(420px, 0.7fr);
+  align-items: center;
+  gap: 8vw;
+  padding: 130px max(7vw, 32px) 90px;
+}
+
+.admin-page__heading h1 {
+  margin: 26px 0 34px;
+  font-size: clamp(58px, 7vw, 108px);
+  line-height: 0.88;
+}
+
+.admin-page__heading p {
+  max-width: 600px;
+  color: #999;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.admin-login {
+  display: grid;
+  gap: 22px;
+  padding: 38px;
+  border: 1px solid var(--line);
+  background: #080808;
+}
+
+.admin-login > svg {
+  width: 38px;
+  height: 38px;
+}
+
+.admin-login h2 {
+  margin: 12px 0 0;
+  font-size: 34px;
+}
+
+.admin-login > p {
+  margin: 0;
+  color: #888;
+  line-height: 1.5;
+}
+
+.admin-console {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-console__status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 15px 18px;
+  border: 1px solid var(--line);
+  color: #aaa;
+  font-size: 11px;
+}
+
+.admin-console__status span,
+.admin-console__status a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-console__status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #6cff96;
+}
+
+.admin-console form > div:first-child {
+  grid-column: 1 / -1;
+}
+
+.admin-console form h2 {
+  margin: 12px 0 6px;
+  font-size: 34px;
+}
+
+.admin-console label > span {
+  color: #777;
+  font-weight: 500;
+}
+
 .contact-page {
   min-height: 100svh;
   display: grid;
@@ -1617,8 +2309,65 @@ img {
   .hardware-story,
   .system-capabilities,
   .public-boundary,
-  .contact-page {
+  .contact-page,
+  .community-hero,
+  .community-principle,
+  .contest-brief,
+  .contest-submit,
+  .admin-page {
     grid-template-columns: 1fr;
+  }
+
+  .community-hero {
+    min-height: auto;
+    gap: 70px;
+    padding: 140px 24px 90px;
+  }
+
+  .community-hero__aside {
+    max-width: 580px;
+  }
+
+  .community-options {
+    grid-template-columns: 1fr;
+    padding: 0;
+  }
+
+  .community-option {
+    min-height: 420px;
+    border-right: 0;
+    border-bottom: 1px solid #c7c7c7;
+  }
+
+  .community-principle {
+    gap: 55px;
+  }
+
+  .github-runway {
+    min-height: 720px;
+  }
+
+  .contest-brief,
+  .contest-submit,
+  .admin-page {
+    gap: 70px;
+  }
+
+  .contest-submit__intro {
+    position: static;
+  }
+
+  .community-live__row {
+    grid-template-columns: 80px 1fr 24px;
+  }
+
+  .community-live__row p {
+    display: none;
+  }
+
+  .campaign-page__layout {
+    grid-template-columns: 1fr;
+    gap: 60px;
   }
 
   .democracy-band__metrics {
@@ -1720,6 +2469,14 @@ img {
 
   .contact-page {
     padding: 130px 24px 90px;
+  }
+
+  .contest-submit,
+  .contest-brief,
+  .admin-page,
+  .community-principle {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 
   .footer__top {
@@ -1827,6 +2584,112 @@ img {
 
   .home-cta h2 {
     font-size: 48px;
+  }
+
+  .community-hero h1,
+  .contest-hero h1 {
+    font-size: 64px;
+  }
+
+  .community-hero h1 strong,
+  .contest-hero h1 strong {
+    -webkit-text-stroke-width: 1.5px;
+  }
+
+  .community-option {
+    min-height: 390px;
+    padding: 34px 24px;
+  }
+
+  .community-option h2 {
+    margin-top: 64px;
+    font-size: 42px;
+  }
+
+  .community-principle {
+    min-height: auto;
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .community-live {
+    padding: 100px 24px;
+  }
+
+  .community-live__row {
+    min-height: 108px;
+    grid-template-columns: 1fr 24px;
+    gap: 18px;
+  }
+
+  .community-live__row > span {
+    grid-column: 1 / -1;
+    align-self: end;
+  }
+
+  .community-principle p {
+    font-size: 38px;
+  }
+
+  .github-runway {
+    min-height: 650px;
+    padding: 84px 24px 0;
+  }
+
+  .github-runway__copy h2 {
+    font-size: 50px;
+  }
+
+  .github-ball {
+    width: 112px;
+  }
+
+  .contest-hero {
+    min-height: auto;
+    padding: 110px 24px 100px;
+  }
+
+  .contest-hero > p {
+    font-size: 18px;
+  }
+
+  .contest-brief,
+  .contest-submit,
+  .admin-page {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .contest-form,
+  .admin-console form {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  .campaign-page {
+    padding: 110px 24px 90px;
+  }
+
+  .campaign-page__layout {
+    margin-top: 70px;
+  }
+
+  .campaign-form {
+    padding: 24px;
+  }
+
+  .contest-form__wide,
+  .admin-console__wide,
+  .admin-console form > div:first-child {
+    grid-column: auto;
+  }
+
+  .admin-page__heading h1 {
+    font-size: 56px;
+  }
+
+  .admin-login {
+    padding: 24px;
   }
 
   .directory-hero {
