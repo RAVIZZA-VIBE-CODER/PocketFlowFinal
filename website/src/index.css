@@ -485,12 +485,16 @@ img {
 .hardware-story {
   min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(320px, 0.8fr) minmax(480px, 1.2fr);
+  grid-template-columns: 1fr;
   align-items: center;
-  gap: 8vw;
+  gap: 90px;
   padding: 130px max(7vw, 32px);
   color: #000;
   background: #e7e7e7;
+}
+
+.hardware-story__copy {
+  max-width: 850px;
 }
 
 .hardware-story .section-label {
@@ -520,6 +524,7 @@ img {
 
 .phone-silhouette {
   position: relative;
+  z-index: 2;
   width: min(330px, 64vw);
   aspect-ratio: 0.49;
   overflow: hidden;
@@ -554,26 +559,55 @@ img {
 .hardware-note {
   position: absolute;
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border: 1px solid #777;
-  border-radius: 4px;
+  align-items: flex-start;
+  gap: 8px;
+  width: clamp(112px, 12vw, 176px);
+  padding: 0;
   color: #222;
-  background: #f8f8f8;
+  background: transparent;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 9px;
+  line-height: 1.35;
   text-transform: uppercase;
 }
 
 .hardware-note span {
+  flex: 0 0 auto;
   color: #777;
 }
 
-.hardware-note--one { top: 16%; left: 0; }
-.hardware-note--two { top: 44%; right: -2%; }
-.hardware-note--three { bottom: 12%; left: 5%; }
+.hardware-note strong {
+  font-weight: 760;
+}
+
+.hardware-note::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  width: clamp(18px, 3vw, 54px);
+  height: 1px;
+  background: #9a9a9a;
+}
+
+.hardware-note--left {
+  top: calc(5% + var(--note-row) * 14.7%);
+  left: 0;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.hardware-note--left::after {
+  right: calc(clamp(18px, 3vw, 54px) * -1 - 9px);
+}
+
+.hardware-note--right {
+  top: calc(5% + var(--note-row) * 14.7%);
+  right: 0;
+}
+
+.hardware-note--right::after {
+  left: calc(clamp(18px, 3vw, 54px) * -1 - 9px);
+}
 
 .team-story {
   padding: 140px max(7vw, 32px);
@@ -2560,8 +2594,48 @@ img {
   }
 
   .hardware-note {
-    max-width: 150px;
+    width: 132px;
     font-size: 8px;
+  }
+
+  .hardware-note::after {
+    width: 24px;
+  }
+
+  .hardware-note--left::after {
+    right: -32px;
+  }
+
+  .hardware-note--right::after {
+    left: -32px;
+  }
+
+  .hardware-story__object {
+    min-height: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 20px;
+  }
+
+  .phone-silhouette {
+    grid-column: 1 / -1;
+    margin-bottom: 58px;
+  }
+
+  .hardware-note,
+  .hardware-note--left,
+  .hardware-note--right {
+    position: static;
+    width: auto;
+    min-height: 58px;
+    justify-content: flex-start;
+    padding: 13px 0;
+    border-top: 1px solid #b9b9b9;
+    font-size: 8px;
+    text-align: left;
+  }
+
+  .hardware-note::after {
+    display: none;
   }
 
   .systems-grid {

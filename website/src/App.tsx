@@ -71,6 +71,23 @@ const homeContext: AgentContext = {
   links: { repository: githubUrl, llms: "/llms.txt" },
 };
 
+const hardwareCapabilities = [
+  "Give hardware a second life",
+  "Fully programmable automations",
+  "Personal model adaptation",
+  "Systems shaped around you",
+  "Open-source functions",
+  "Local-first memory",
+  "Cloud only when chosen",
+  "Phone-native control",
+  "Visible workflows",
+  "Modular agents",
+  "Team-ready relays",
+  "Private by default",
+  "Builder-owned data",
+  "Runs on spare Android",
+];
+
 function useRoute() {
   const [path, setPath] = useState(() => window.location.pathname.replace(/\/+$/, "") || "/");
 
@@ -389,9 +406,16 @@ function HomePage({ path, navigate }: { path: string; navigate: (path: string) =
           <div className="phone-silhouette">
             <img src="/pocketflow-system-screen.png" alt="PocketFlow system core connecting twelve phone-based AI tools" loading="lazy" />
           </div>
-          <div className="hardware-note hardware-note--one"><span>01</span> Reused hardware</div>
-          <div className="hardware-note hardware-note--two"><span>02</span> Personal models</div>
-          <div className="hardware-note hardware-note--three"><span>03</span> Visible automations</div>
+          {hardwareCapabilities.map((capability, index) => (
+            <div
+              className={`hardware-note hardware-note--${index % 2 === 0 ? "left" : "right"}`}
+              style={{ "--note-row": Math.floor(index / 2) } as CSSProperties}
+              key={capability}
+            >
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{capability}</strong>
+            </div>
+          ))}
         </div>
       </section>
 
