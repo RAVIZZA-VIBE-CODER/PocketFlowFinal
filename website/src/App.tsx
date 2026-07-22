@@ -343,7 +343,6 @@ function WebMonitorPhone() {
 }
 
 function HomePage({ path, navigate }: { path: string; navigate: (path: string) => void }) {
-  const featured = systems[0];
   return (
     <PageShell path={path} navigate={navigate} context={homeContext}>
       <section className="home-hero">
@@ -357,7 +356,7 @@ function HomePage({ path, navigate }: { path: string; navigate: (path: string) =
           </div>
         </div>
         <div className="home-hero__device">
-          <PhoneArtwork system={featured} priority />
+          <img className="home-hero__network" src="/hero-pocketflow-network.png" alt="PocketFlow network connecting a collection of phone-based AI workspaces" fetchPriority="high" />
         </div>
         <a href="#philosophy" className="scroll-cue" aria-label="Scroll to learn more"><ArrowDown /></a>
       </section>

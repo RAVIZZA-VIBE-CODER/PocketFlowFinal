@@ -334,23 +334,22 @@ img {
 .home-hero__device {
   position: relative;
   z-index: 1;
-  align-self: end;
+  align-self: center;
   min-width: 0;
-  height: calc(94svh - 86px);
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
 }
 
-.home-hero__device .phone-artwork {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-
-.home-hero__device .phone-artwork img {
-  width: 100%;
-  height: 100%;
+.home-hero__network {
+  width: min(760px, 50vw);
+  max-width: none;
+  height: auto;
   object-fit: contain;
-  object-position: center bottom;
+  filter: contrast(1.06);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 13%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 13%, #000 88%, transparent 100%);
 }
 
 .scroll-cue {
@@ -2279,22 +2278,12 @@ img {
   .home-hero__device {
     height: auto;
     min-height: 0;
-    display: flex;
-    justify-content: center;
-    margin: 12px -20px 0;
+    margin: 36px -20px 18px;
     overflow: visible;
   }
 
-  .home-hero__device .phone-artwork {
-    width: min(460px, 78vw);
-    height: auto;
-    margin: 0;
-    transform: none;
-  }
-
-  .home-hero__device .phone-artwork img {
-    width: 100%;
-    height: auto;
+  .home-hero__network {
+    width: min(760px, 108vw);
   }
 
   .scroll-cue {
@@ -2533,9 +2522,8 @@ img {
     min-height: 0;
   }
 
-  .home-hero__device .phone-artwork {
-    width: min(320px, 78vw);
-    height: auto;
+  .home-hero__network {
+    width: 116vw;
   }
 
   .manifesto {
