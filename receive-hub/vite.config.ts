@@ -2,8 +2,6 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig} from 'vite';
-import wasm from 'vite-plugin-wasm';
-import topLevelAwait from 'vite-plugin-top-level-await';
 
 export default defineConfig(() => {
   const previewHost = process.env.VITE_PREVIEW_HOST || 'localhost';
@@ -11,8 +9,6 @@ export default defineConfig(() => {
   return {
     base: './',
     plugins: [
-      wasm(),
-      topLevelAwait(),
       {
         name: 'pocketflow-newsflow-feed-proxy',
         configureServer(server) {
@@ -174,24 +170,6 @@ export default defineConfig(() => {
         output: {
           manualChunks(id) {
             if (!id.includes('node_modules')) return undefined;
-            if (
-              id.includes('@noble/hashes') ||
-              id.includes('bs58') ||
-              id.includes('base-x') ||
-              id.includes('bech32') ||
-              id.includes('wif')
-            ) {
-              return 'vendor-crypto-encoding';
-            }
-            if (id.includes('tiny-secp256k1')) return 'vendor-crypto-secp';
-            if (id.includes('bip39')) return 'vendor-crypto-mnemonic';
-            if (id.includes('bitcoinjs-lib')) return 'vendor-crypto-core';
-            if (id.includes('bip32') || id.includes('ecpair') || id.includes('ed25519-hd-key') || id.includes('@noble/curves') || id.includes('@noble/ed25519')) {
-              return 'vendor-crypto-core';
-            }
-            if (id.includes('@solana/web3.js') || id.includes('rpc-websockets')) return 'vendor-solana';
-            if (id.includes('ethers')) return 'vendor-ethers';
-            if (id.includes('qrcode')) return 'vendor-qrcode';
             if (id.includes('jszip')) return 'vendor-zip';
             if (id.includes('lucide-react')) return 'vendor-icons';
             if (id.includes('react') || id.includes('scheduler')) return 'vendor-react';

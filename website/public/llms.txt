@@ -1,0 +1,20 @@
+# PocketFlow
+
+PocketFlow is a phone-first, local-first AI operating shell by Tanuki Labs. It turns ordinary Android phones into personal control rooms for models, automations, files, research, communication, and team workflows.
+
+## Purpose
+
+- Make useful AI infrastructure accessible on inexpensive, reusable hardware.
+- Give each teammate a personal operating layer while preserving a shared system spine.
+- Keep routine reasoning, memory, and automation local whenever possible.
+- Reduce cloud cost, context switching, and unnecessary data movement.
+
+## Public systems
+
+Router / System Map; Baloss LLM; Builder; Archive / Reader; MemoPad / Calenotes; NewsFlow; Notebook / Moltbook Agent; Codex Relay; Screen Relay; Terminal; PocketWeb; Web Monitor.
+
+## Public repository
+
+https://github.com/RAVIZZA-VIBE-CODER/PocketFlowFinal
+
+This public release is sanitized. It excludes private contacts, credentials, server endpoints, personal databases, wallet experiments, relay history, and live delivery secrets.

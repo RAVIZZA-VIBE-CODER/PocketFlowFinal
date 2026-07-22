@@ -1,37 +1,40 @@
-# Codex Operating Guide
+# PocketFlowFinal Agent Guide
 
-This repository uses a source-derived routing map instead of a prose wiki.
+This repository is the public, sanitized PocketFlow snapshot. The runnable app
+lives in `receive-hub/` and the product website lives in `website/`; the repository does not include the private project's
+`.codex` routing maps, services, credentials, or local data.
 
-Before changing code, read:
+## Before Changing Code
 
-1. `.codex/codex-map.yaml`
-2. The module map named by the route you are touching.
-3. Any linked flow, contract, invariant, or risk file.
+1. Read `README.md` for the public/private boundary.
+2. Read `APP_BRANCHES.md` when changing a standalone app package.
+3. Inspect the relevant source under `receive-hub/src/` and its imports before
+   editing.
 
-Do not start with broad repo scans unless the map is missing, stale, or the task crosses unknown boundaries.
-
-## Routing Rules
-
-- Use `.codex/codex-map.yaml` to find the right module.
-- Use `.codex/modules/*.yaml` for entry points, source files, data stores, invariants, and known risks.
-- Use `.codex/flows/*.yaml` for user-visible workflows.
-- Use `.codex/contracts/*.yaml` for API, storage, bridge, and file-shape expectations.
-- Use `.codex/generated/*.json` only as source-derived inventory, not as product intent.
-
-## Safety Rules
-
-- Do not print secrets, tokens, passwords, or private keys.
-- Track env var names, never values.
-- Do not silently change app behavior while updating maps.
-- If a map has low confidence, verify with source before editing.
-- If phone, relay, model, or storage claims are made, verify with a command or label them as inferred.
+Keep public-safe wrappers and disabled integrations public-safe. Do not restore
+private endpoints, contacts, account data, wallet experiments, relay history,
+delivery credentials, or machine-specific paths.
 
 ## Validation
 
-Run:
+From the repository root, run:
 
 ```bash
-npm run codex-map:check
+npm --prefix receive-hub run lint
+npm --prefix receive-hub run build
+npm --prefix website run build
+node scripts/scan-public-release.mjs
 ```
 
-Use this map as the memory spine for PocketFlow, BalossLLM, BigBrain/Tommyboy, Relay, Reader/Archive, News, CRM, and Moltbook agent work.
+When dependency metadata changes, install with `npm --prefix receive-hub ci`
+before running the checks above.
+
+## Safety
+
+- Never print or commit secrets, tokens, passwords, private keys, or personal
+  data.
+- Track environment variable names, never values.
+- Keep changes scoped to this public snapshot; verify private-system assumptions
+  against source rather than copying behavior from the private repository.
+- Treat `app-bundles-index.json` and `APP_BRANCHES.md` as the source of truth for
+  the standalone public branches.

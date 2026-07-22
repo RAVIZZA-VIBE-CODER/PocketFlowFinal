@@ -232,6 +232,21 @@ npm run build
 node ../scripts/scan-public-release.mjs
 ```
 
+## Product Website
+
+The competition website is a separate Vite app with a dedicated route for each
+public PocketFlow system:
+
+```bash
+cd website
+npm install
+npm run dev
+```
+
+Copy `.env.example` to `.env` when connecting the contact form, social profiles,
+or a hosted PocketFlow demo. The website also exposes `/llms.txt` and per-route
+JSON-LD summaries for research agents.
+
 ## Public Privacy Check
 
 The repository includes a release scanner:
