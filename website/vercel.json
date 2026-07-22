@@ -4,6 +4,7 @@
   "buildCommand": "npm run build:static",
   "outputDirectory": "dist",
   "rewrites": [
+    { "source": "/api/moltbook-profile", "destination": "/api/moltbook-profile" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [

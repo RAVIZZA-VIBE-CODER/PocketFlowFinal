@@ -1519,6 +1519,236 @@ img {
   transition: color 180ms ease, transform 180ms ease;
 }
 
+.moltbook-profile {
+  padding: 130px max(7vw, 32px);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  background: #090909;
+}
+
+.moltbook-profile__head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.moltbook-profile__head h2 {
+  margin: 28px 0 0;
+  font-size: clamp(58px, 8vw, 124px);
+  line-height: 0.9;
+  letter-spacing: 0;
+}
+
+.moltbook-profile__identity {
+  min-width: min(100%, 410px);
+  display: grid;
+  grid-template-columns: 62px 1fr 40px;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 0;
+  border-top: 1px solid #ff3b30;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.moltbook-profile__avatar {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid #ff3b30;
+  border-radius: 50%;
+  background: #ff3b30;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.moltbook-profile__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.moltbook-profile__identity > div:nth-child(2) {
+  display: grid;
+  gap: 5px;
+}
+
+.moltbook-profile__identity strong {
+  font-size: 18px;
+}
+
+.moltbook-profile__identity span {
+  color: #888;
+  font-size: 12px;
+}
+
+.moltbook-profile__identity > a {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: #fff;
+}
+
+.moltbook-profile__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 100px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.moltbook-profile__stats > div {
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.moltbook-profile__stats > div:last-child {
+  border-right: 0;
+}
+
+.moltbook-profile__stats strong {
+  font-size: clamp(48px, 6vw, 92px);
+  line-height: 0.9;
+}
+
+.moltbook-profile__stats span,
+.moltbook-profile__status,
+.moltbook-posts__intro > span,
+.moltbook-post > div {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.moltbook-profile__stats span {
+  color: #999;
+}
+
+.moltbook-profile__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0;
+  color: #777;
+}
+
+.moltbook-profile__status > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #555;
+}
+
+.moltbook-profile__status > span.is-live {
+  background: #ff3b30;
+  box-shadow: 0 0 0 5px rgba(255, 59, 48, 0.14);
+}
+
+.moltbook-posts {
+  display: grid;
+  grid-template-columns: minmax(200px, 0.45fr) minmax(0, 1fr);
+  gap: 7vw;
+  margin-top: 90px;
+}
+
+.moltbook-posts__intro p {
+  max-width: 340px;
+  margin: 24px 0 0;
+  font-size: 34px;
+  line-height: 1.08;
+}
+
+.moltbook-posts__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.moltbook-post {
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  padding: 26px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  background: #0e0e0e;
+  transition: background 180ms ease;
+}
+
+.moltbook-post:last-child {
+  border-right: 0;
+}
+
+.moltbook-post:hover {
+  background: #171010;
+}
+
+.moltbook-post > div,
+.moltbook-post footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: #ff7d76;
+}
+
+.moltbook-post > div svg {
+  width: 15px;
+}
+
+.moltbook-post h3 {
+  margin: 60px 0 22px;
+  font-size: clamp(22px, 2vw, 32px);
+  line-height: 1.04;
+}
+
+.moltbook-post > p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7;
+}
+
+.moltbook-post footer {
+  margin-top: auto;
+  padding-top: 30px;
+  color: #777;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 9px;
+}
+
+.moltbook-post--loading {
+  animation: moltbook-loading 1.4s ease-in-out infinite alternate;
+}
+
+.moltbook-posts__empty {
+  grid-column: 1 / -1;
+  min-height: 260px;
+  display: grid;
+  place-items: center;
+  padding: 40px;
+  color: #888;
+  text-align: center;
+}
+
+@keyframes moltbook-loading {
+  from { opacity: 0.35; }
+  to { opacity: 0.75; }
+}
+
 .github-runway {
   position: relative;
   min-height: 82svh;
@@ -1614,6 +1844,56 @@ img {
 .github-ball:focus-visible {
   outline: 4px solid var(--tech-green);
   outline-offset: 5px;
+}
+
+.github-runway--moltbook {
+  color: #fff;
+  background: #080808;
+}
+
+.github-runway--moltbook .github-runway__copy p {
+  color: #999;
+}
+
+.github-runway--moltbook .github-runway__track {
+  background: #ff3b30;
+}
+
+.github-runway--moltbook .github-runway__track span {
+  background: #ff3b30;
+  box-shadow: calc(86vw - 72px) 0 #ff3b30;
+}
+
+.github-runway--moltbook .github-ball__body {
+  border-color: #ff3b30;
+  background: #ff3b30;
+  box-shadow: inset -16px -18px 0 #a51612, 0 20px 0 rgba(0, 0, 0, 0.32);
+}
+
+.github-runway--moltbook .github-ball__label {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.github-runway--moltbook .github-ball:hover,
+.github-runway--moltbook .github-ball:focus-visible {
+  outline-color: #fff;
+}
+
+.moltbook-ball-mark {
+  position: relative;
+  display: block;
+  font-size: clamp(42px, 5vw, 70px);
+  font-weight: 950;
+  line-height: 0.8;
+}
+
+.moltbook-ball-mark i {
+  position: absolute;
+  top: -7px;
+  right: -18px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 9px;
+  font-style: normal;
 }
 
 .contest-hero {
@@ -2268,6 +2548,11 @@ img {
   .system-hero h1 {
     font-size: clamp(58px, 7vw, 92px);
   }
+
+  .moltbook-posts {
+    grid-template-columns: 1fr;
+    gap: 54px;
+  }
 }
 
 @media (max-width: 840px) {
@@ -2376,6 +2661,47 @@ img {
 
   .github-runway {
     min-height: 720px;
+  }
+
+  .moltbook-profile {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .moltbook-profile__head {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .moltbook-profile__identity {
+    width: 100%;
+  }
+
+  .moltbook-profile__stats {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 72px;
+  }
+
+  .moltbook-profile__stats > div:nth-child(2) {
+    border-right: 0;
+  }
+
+  .moltbook-profile__stats > div:nth-child(-n + 2) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .moltbook-posts__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .moltbook-post {
+    min-height: 340px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .moltbook-post:last-child {
+    border-bottom: 0;
   }
 
   .contest-brief,

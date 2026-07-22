@@ -42,6 +42,7 @@ const githubUrl = import.meta.env.VITE_GITHUB_URL || githubBase;
 const xUrl = import.meta.env.VITE_X_URL || "https://x.com/TanukiLabsAI";
 const demoBaseUrl = import.meta.env.VITE_DEMO_BASE_URL || "";
 const communityEndpoint = import.meta.env.VITE_COMMUNITY_API_BASE || "/api/community";
+const moltbookProfileUrl = "https://www.moltbook.com/u/agentmoltbook";
 
 type AgentContext = {
   page: string;
@@ -57,6 +58,31 @@ type CommunityCampaign = {
   summary: string;
   closesAt?: string | null;
   questions: string[];
+};
+
+type MoltbookPost = {
+  id: string;
+  title: string;
+  content: string;
+  submolt: string;
+  score: number;
+  comments: number;
+  createdAt: string;
+};
+
+type MoltbookProfileData = {
+  profile: {
+    name: string;
+    description: string;
+    avatarUrl: string;
+    karma: number;
+    followers: number;
+    following: number;
+    posts: number;
+    verified: boolean;
+  };
+  posts: MoltbookPost[];
+  refreshedAt: string;
 };
 
 const homeContext: AgentContext = {
@@ -497,6 +523,93 @@ function SystemsPage({ path, navigate }: { path: string; navigate: (path: string
   );
 }
 
+function MoltbookProfile() {
+  const [data, setData] = useState<MoltbookProfileData | null>(null);
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+
+  useEffect(() => {
+    let active = true;
+    const refresh = async () => {
+      try {
+        const response = await fetch("/api/moltbook-profile", { headers: { Accept: "application/json" } });
+        if (!response.ok) throw new Error("Profile unavailable");
+        const next = await response.json() as MoltbookProfileData;
+        if (active) {
+          setData(next);
+          setStatus("ready");
+        }
+      } catch {
+        if (active) setStatus("error");
+      }
+    };
+
+    refresh();
+    const interval = window.setInterval(refresh, 60 * 60 * 1000);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+    };
+  }, []);
+
+  const formatNumber = (value: number) => new Intl.NumberFormat("en", { notation: value >= 10000 ? "compact" : "standard", maximumFractionDigits: 1 }).format(value);
+  const refreshed = data?.refreshedAt
+    ? new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit", timeZoneName: "short" }).format(new Date(data.refreshedAt))
+    : "Waiting for Moltbook";
+
+  return (
+    <section className="moltbook-profile" aria-labelledby="moltbook-profile-title">
+      <div className="moltbook-profile__head">
+        <div>
+          <span className="section-label">Live from Moltbook</span>
+          <h2 id="moltbook-profile-title">The agent,<br />in public.</h2>
+        </div>
+        <div className="moltbook-profile__identity">
+          <div className="moltbook-profile__avatar" aria-hidden="true">
+            {data?.profile.avatarUrl ? <img src={data.profile.avatarUrl} alt="" /> : <span>M</span>}
+          </div>
+          <div><strong>u/{data?.profile.name || "agentmoltbook"}</strong><span>{data?.profile.verified ? "Verified agent" : "Public agent profile"}</span></div>
+          <a href={moltbookProfileUrl} target="_blank" rel="noreferrer" aria-label="Open agentmoltbook on Moltbook"><ExternalLink /></a>
+        </div>
+      </div>
+
+      <div className="moltbook-profile__stats" aria-label="Live Moltbook account statistics">
+        {[
+          ["Karma", data?.profile.karma],
+          ["Followers", data?.profile.followers],
+          ["Following", data?.profile.following],
+          ["Posts", data?.profile.posts],
+        ].map(([label, value]) => (
+          <div key={String(label)}><strong>{typeof value === "number" ? formatNumber(value) : "—"}</strong><span>{label}</span></div>
+        ))}
+      </div>
+
+      <div className="moltbook-profile__status">
+        <span className={status === "ready" ? "is-live" : ""} />
+        {status === "loading" && "Connecting to the public profile"}
+        {status === "ready" && `Live data · refreshed ${refreshed} · updates hourly`}
+        {status === "error" && "Live profile temporarily unavailable · the link remains active"}
+      </div>
+
+      <div className="moltbook-posts">
+        <div className="moltbook-posts__intro"><span>Recent public posts</span><p>Dispatches from the agent’s working edge.</p></div>
+        <div className="moltbook-posts__grid">
+          {status === "loading" && [0, 1, 2].map((index) => <div className="moltbook-post moltbook-post--loading" key={index} />)}
+          {status === "error" && <div className="moltbook-posts__empty">Moltbook did not return its public feed. Open the profile to read the latest posts directly.</div>}
+          {status === "ready" && data?.posts.length === 0 && <div className="moltbook-posts__empty">No public posts were returned by Moltbook.</div>}
+          {data?.posts.slice(0, 3).map((post) => (
+            <a className="moltbook-post" href={`https://www.moltbook.com/post/${post.id}`} target="_blank" rel="noreferrer" key={post.id || post.title}>
+              <div><span>{post.submolt ? `m/${post.submolt}` : "Moltbook"}</span><ExternalLink /></div>
+              <h3>{post.title || "Untitled dispatch"}</h3>
+              <p>{post.content}</p>
+              <footer><span>↑ {formatNumber(post.score)}</span><span>{formatNumber(post.comments)} comments</span></footer>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function SystemDetailPage({ system, path, navigate }: { system: SystemPage; path: string; navigate: (path: string) => void }) {
   const index = systems.findIndex((item) => item.slug === system.slug);
   const next = systems[(index + 1) % systems.length];
@@ -504,7 +617,11 @@ function SystemDetailPage({ system, path, navigate }: { system: SystemPage; path
     page: system.name,
     summary: `${system.description} ${system.teamRole}`,
     facts: [system.statement, ...system.capabilities, ...system.workflow, `Public boundary: ${system.publicBoundary}`],
-    links: { sourceBranch: `${githubUrl}/tree/${system.branch}`, repository: githubUrl },
+    links: {
+      sourceBranch: `${githubUrl}/tree/${system.branch}`,
+      repository: githubUrl,
+      ...(system.slug === "notebook-agent" ? { moltbookProfile: moltbookProfileUrl } : {}),
+    },
   };
   const accentStyle = { "--accent": system.accent } as CSSProperties;
   const demoUrl = demoBaseUrl && system.appId ? `${demoBaseUrl.replace(/\/$/, "")}/?app=${system.appId}` : "";
@@ -522,6 +639,7 @@ function SystemDetailPage({ system, path, navigate }: { system: SystemPage; path
             <div className="hero-actions">
               <a href={`${githubUrl}/tree/${system.branch}`} target="_blank" rel="noreferrer" className="button button--accent">View source <Github /></a>
               {demoUrl && <a href={demoUrl} target="_blank" rel="noreferrer" className="button button--ghost">Open demo <ExternalLink /></a>}
+              {system.slug === "notebook-agent" && <a href={moltbookProfileUrl} target="_blank" rel="noreferrer" className="button button--ghost">Moltbook profile <ExternalLink /></a>}
             </div>
           </div>
           <div className="system-hero__phone">
@@ -553,6 +671,23 @@ function SystemDetailPage({ system, path, navigate }: { system: SystemPage; path
           <p>{system.publicBoundary}</p>
         </section>
 
+        {system.slug === "notebook-agent" && (
+          <>
+            <MoltbookProfile />
+            <BouncyRunway
+              id="meet-on-moltbook"
+              tone="moltbook"
+              eyebrow="Meet us on Moltbook"
+              title={<>Follow the agent.<br />Watch the system speak.</>}
+              copy="Read the live profile, follow the experiments, and see what the agent publishes next."
+              href={moltbookProfileUrl}
+              label="Moltbook"
+              ariaLabel="Open agentmoltbook on Moltbook"
+              icon={<span className="moltbook-ball-mark">M<i>01</i></span>}
+            />
+          </>
+        )}
+
         <section className="next-system">
           <span>Next system</span>
           <SiteLink to={`/systems/${next.slug}`} navigate={navigate}>
@@ -564,7 +699,19 @@ function SystemDetailPage({ system, path, navigate }: { system: SystemPage; path
   );
 }
 
-function GithubBounce() {
+type BouncyRunwayProps = {
+  id: string;
+  tone: "github" | "moltbook";
+  eyebrow: string;
+  title: ReactNode;
+  copy: string;
+  href: string;
+  label: string;
+  ariaLabel: string;
+  icon: ReactNode;
+};
+
+function BouncyRunway({ id, tone, eyebrow, title, copy, href, label, ariaLabel, icon }: BouncyRunwayProps) {
   const runwayRef = useRef<HTMLElement>(null);
   const ballRef = useRef<HTMLAnchorElement>(null);
   const ballBodyRef = useRef<HTMLSpanElement>(null);
@@ -732,20 +879,36 @@ function GithubBounce() {
   }, []);
 
   return (
-    <section ref={runwayRef} className="github-runway" id="work-with-us" aria-label="Work with us on GitHub">
+    <section ref={runwayRef} className={`github-runway github-runway--${tone}`} id={id} aria-label={ariaLabel}>
       <div className="github-runway__copy">
-        <span className="section-label">Work with us</span>
-        <h2>Build in public.<br />Move the system forward.</h2>
-        <p>Follow the source, fork an idea, or bring something entirely your own.</p>
+        <span className="section-label">{eyebrow}</span>
+        <h2>{title}</h2>
+        <p>{copy}</p>
       </div>
       <div className="github-runway__track" aria-hidden="true"><span /></div>
-      <a ref={ballRef} className="github-ball" href={githubUrl} target="_blank" rel="noreferrer" aria-label="Open PocketFlow on GitHub" onPointerEnter={(event) => wakeRef.current(event.clientX, event.clientY)} onPointerDown={(event) => wakeRef.current(event.clientX, event.clientY)} onFocus={() => wakeRef.current()}>
+      <a ref={ballRef} className="github-ball" href={href} target="_blank" rel="noreferrer" aria-label={ariaLabel} onPointerEnter={(event) => wakeRef.current(event.clientX, event.clientY)} onPointerDown={(event) => wakeRef.current(event.clientX, event.clientY)} onFocus={() => wakeRef.current()}>
         <span ref={ballBodyRef} className="github-ball__body">
-          <Github />
-          <span className="github-ball__label">GitHub</span>
+          {icon}
+          <span className="github-ball__label">{label}</span>
         </span>
       </a>
     </section>
+  );
+}
+
+function GithubBounce() {
+  return (
+    <BouncyRunway
+      id="work-with-us"
+      tone="github"
+      eyebrow="Work with us"
+      title={<>Build in public.<br />Move the system forward.</>}
+      copy="Follow the source, fork an idea, or bring something entirely your own."
+      href={githubUrl}
+      label="GitHub"
+      ariaLabel="Open PocketFlow on GitHub"
+      icon={<Github />}
+    />
   );
 }
 
