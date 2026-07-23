@@ -424,8 +424,8 @@ function HomePage({ path, navigate }: { path: string; navigate: (path: string) =
       <section className="home-hero">
         <div className="home-hero__copy">
           <div className="hero-kicker"><span /> A local AI operating shell</div>
-          <h1><span>Pocket</span><span>Flow</span></h1>
-          <p>AI belongs in your pocket.</p>
+          <h1 aria-label="PocketFlow digital business cards, QR tickets and local AI tools"><span>Pocket</span><span>Flow</span></h1>
+          <p>Digital business cards, QR tickets, event access, and local AI in your pocket.</p>
           <div className="hero-actions">
             <SiteLink to="/systems" navigate={navigate} className="button button--light">Explore the systems <ArrowRight /></SiteLink>
             <a href={githubUrl} target="_blank" rel="noreferrer" className="button button--ghost"><Github /> View source</a>
