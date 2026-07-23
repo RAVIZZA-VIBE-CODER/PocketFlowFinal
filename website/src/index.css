@@ -1909,6 +1909,43 @@ img {
   outline-offset: 5px;
 }
 
+.github-runway__scoreboard {
+  position: absolute;
+  right: max(24px, 6vw);
+  bottom: 74px;
+  z-index: 4;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 9px;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 999px;
+  color: #000;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.github-runway__scoreboard span {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.055);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.github-runway__scoreboard strong {
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
 .github-runway--moltbook {
   color: #fff;
   background: #080808;
@@ -1940,6 +1977,16 @@ img {
 .github-runway--moltbook .github-ball:hover,
 .github-runway--moltbook .github-ball:focus-visible {
   outline-color: #fff;
+}
+
+.github-runway--moltbook .github-runway__scoreboard {
+  border-color: rgba(255, 59, 48, 0.36);
+  color: #fff;
+  background: rgba(8, 8, 8, 0.78);
+}
+
+.github-runway--moltbook .github-runway__scoreboard span {
+  background: rgba(255, 59, 48, 0.16);
 }
 
 .moltbook-ball-mark {
@@ -2734,6 +2781,15 @@ img {
     min-height: 720px;
   }
 
+  .github-runway__scoreboard {
+    right: 24px;
+    bottom: 82px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: min(440px, calc(100% - 48px));
+    border-radius: 28px;
+  }
+
   .moltbook-profile {
     padding-right: 24px;
     padding-left: 24px;
@@ -3121,6 +3177,23 @@ img {
 
   .github-ball {
     width: 112px;
+  }
+
+  .github-runway__scoreboard {
+    right: 18px;
+    bottom: 72px;
+    gap: 6px;
+    padding: 7px;
+  }
+
+  .github-runway__scoreboard span {
+    min-height: 30px;
+    padding: 0 9px;
+    font-size: 8px;
+  }
+
+  .github-runway__scoreboard strong {
+    font-size: 13px;
   }
 
   .contest-hero {

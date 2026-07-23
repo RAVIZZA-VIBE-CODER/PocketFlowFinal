@@ -758,13 +758,27 @@ type BouncyRunwayProps = {
   label: string;
   ariaLabel: string;
   icon: ReactNode;
+  showScore?: boolean;
 };
 
-function BouncyRunway({ id, tone, eyebrow, title, copy, href, label, ariaLabel, icon }: BouncyRunwayProps) {
+function BouncyRunway({ id, tone, eyebrow, title, copy, href, label, ariaLabel, icon, showScore = false }: BouncyRunwayProps) {
   const runwayRef = useRef<HTMLElement>(null);
   const ballRef = useRef<HTMLAnchorElement>(null);
   const ballBodyRef = useRef<HTMLSpanElement>(null);
   const wakeRef = useRef<(clientX?: number, clientY?: number) => void>(() => undefined);
+  const [currentScore, setCurrentScore] = useState(0);
+  const [sessionHighScore, setSessionHighScore] = useState(0);
+  const [allTimeHighScore, setAllTimeHighScore] = useState(0);
+  const highScoreStorageKey = `pocketflow:${id}:high-score`;
+
+  useEffect(() => {
+    try {
+      const storedScore = Number.parseInt(window.localStorage.getItem(highScoreStorageKey) || "0", 10);
+      if (Number.isFinite(storedScore) && storedScore > 0) setAllTimeHighScore(storedScore);
+    } catch {
+      setAllTimeHighScore(0);
+    }
+  }, [highScoreStorageKey]);
 
   useEffect(() => {
     const runway = runwayRef.current;
@@ -788,6 +802,34 @@ function BouncyRunway({ id, tone, eyebrow, title, copy, href, label, ariaLabel, 
     let bounceCount = 0;
     let bounceTarget = 7;
     let maximumX = 0;
+    let hitScore = 0;
+
+    const publishScore = (score: number) => {
+      setCurrentScore(score);
+      setSessionHighScore((previous) => Math.max(previous, score));
+      setAllTimeHighScore((previous) => {
+        const next = Math.max(previous, score);
+        if (next !== previous) {
+          try {
+            window.localStorage.setItem(highScoreStorageKey, String(next));
+          } catch {
+            // Storage can be blocked in private contexts; the live score still works.
+          }
+        }
+        return next;
+      });
+    };
+
+    const addHit = () => {
+      hitScore += 1;
+      publishScore(hitScore);
+    };
+
+    const resetHitStreak = () => {
+      if (hitScore === 0) return;
+      hitScore = 0;
+      setCurrentScore(0);
+    };
 
     const measure = () => {
       maximumX = Math.max(0, runway.clientWidth - ball.offsetLeft - ball.offsetWidth - 24);
@@ -854,6 +896,7 @@ function BouncyRunway({ id, tone, eyebrow, title, copy, href, label, ariaLabel, 
 
       render();
       if (y === 0 && velocityY === 0 && Math.abs(velocityX) < 7 && Math.abs(angularVelocity) < 8) {
+        resetHitStreak();
         sleeping = true;
         frame = 0;
         return;
@@ -874,6 +917,7 @@ function BouncyRunway({ id, tone, eyebrow, title, copy, href, label, ariaLabel, 
       squash = 1;
       sleeping = false;
       lastTime = performance.now();
+      if (dropFromTop) resetHitStreak();
       render();
       frame = window.requestAnimationFrame(tick);
     };
@@ -883,6 +927,7 @@ function BouncyRunway({ id, tone, eyebrow, title, copy, href, label, ariaLabel, 
     render();
     wakeRef.current = (clientX, clientY) => {
       if (reducedMotion) return;
+      addHit();
       const bounds = ball.getBoundingClientRect();
       const hasPointerPosition = typeof clientX === "number" && typeof clientY === "number";
       const horizontalContact = hasPointerPosition
@@ -941,6 +986,13 @@ function BouncyRunway({ id, tone, eyebrow, title, copy, href, label, ariaLabel, 
           <span className="github-ball__label">{label}</span>
         </span>
       </a>
+      {showScore && (
+        <div className="github-runway__scoreboard" aria-live="polite">
+          <span><strong>{currentScore}</strong> hits</span>
+          <span>EP best <strong>{sessionHighScore}</strong></span>
+          <span>Best <strong>{allTimeHighScore}</strong></span>
+        </div>
+      )}
     </section>
   );
 }
@@ -957,6 +1009,7 @@ function GithubBounce() {
       label="GitHub"
       ariaLabel="Open PocketFlow on GitHub"
       icon={<Github />}
+      showScore
     />
   );
 }
